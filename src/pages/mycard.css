@@ -1,0 +1,23 @@
+ .addIconWrap{
+  position: absolute;
+  right: 5%;
+  bottom: 15%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    z-index: 1;
+} 
+
+.addIcon{
+  height: 100px;
+  width: 100px;
+} 
+
+.cardsWrap{
+   overflow-y: auto;
+   max-width: 90vw; 
+  display: flex;
+  padding: 20px 50px 20px 50px;
+  margin: 50px;
+}
