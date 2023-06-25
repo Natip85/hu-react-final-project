@@ -83,8 +83,22 @@ const Header = ({ isTopOfPage }: headerProps) => {
       <nav className={` navbar ${navbarBackground}`}>
         <div style={{ height: 75 }} className="inner-div">
           {/* LEFT SIDE */}
-          <Link href="/">
-            <div style={{ fontSize: "2rem", color: "black" }}>BCard</div>
+          <Link style={{textDecoration:"none"}} href="/">
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                fontSize: "2rem",
+                color: "black",
+              }}
+            >
+              <img
+                style={{ width: "3rem" }}
+                src="https://media.istockphoto.com/id/1165333600/vector/bold-letter-b-logo-design-element-negative-space-style-two-letters-bc-or-cb-initials.jpg?s=612x612&w=0&k=20&c=EPa5zAijUCRwD5sMMd3F1QRCblBGENuYuYLAad__Nxc="
+                alt=""
+              />
+              Card
+            </div>
           </Link>
 
           {/* RIGHT SIDE */}
