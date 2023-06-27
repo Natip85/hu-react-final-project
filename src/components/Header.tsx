@@ -60,12 +60,12 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-function getFirstInitial() {
-  const userName = user;
-  const cleanName =
-    userName.firstName?.charAt(0).toUpperCase() + userName.firstName.slice(1);
-  return cleanName;
-}
+// function getFirstInitial() {
+//   const userName = user;
+//   const cleanName =
+//     userName.firstName?.charAt(0).toUpperCase() + userName.firstName.slice(1);
+//   return cleanName;
+// }
 
 const Header = ({ isTopOfPage }: headerProps) => {
   const [isMenuToggled, setIsMenuToggled] = useState<boolean>(false);
@@ -89,7 +89,9 @@ const Header = ({ isTopOfPage }: headerProps) => {
                 display: "flex",
                 alignItems: "center",
                 fontSize: "2rem",
-                color: "black",
+                color: "white",
+                backgroundColor: 'black',
+                padding: 4
               }}
             >
               <img
@@ -123,7 +125,7 @@ const Header = ({ isTopOfPage }: headerProps) => {
                 </Search>
                 {verifyToken() && (
                   <>
-                    {context?.userName && <div>Hi, {getFirstInitial()}</div>}
+                    {context?.userName && <div>Hi, {context.userName}</div>}
 
                     <UserAreaDropdown />
                   </>

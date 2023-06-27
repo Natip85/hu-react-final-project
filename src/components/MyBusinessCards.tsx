@@ -11,8 +11,9 @@ import { useContext } from "react";
 import { AppContext } from "../App";
 import DeleteButton from "./DeleteButton";
 import EditButton from "./EditButton";
-import { changeFav } from "../api/apiServices";
+// import { changeFav } from "../api/apiServices";
 import { useState } from "react";
+import { getFavorites, setFavorites } from "../api/apiServices";
 
 export interface CardProps {
   _id?: string;
@@ -56,15 +57,23 @@ const MyBusinessCard = ({
   const context = useContext(AppContext);
   const [active, setActive] = useState(false);
 
-  async function handleFavClick() {
-    await changeFav(cardId as string);
-    setActive(!active);
-  }
+  // async function handleFavClick() {
+  //   await changeFav(cardId as string);
+  //   setActive(!active);
+  // }
 
    function callNumber(number: any) {
     window.location.href = `tel:${phone}`;
   }
 
+  
+   async function handleSetFavs(id: string){
+    await setFavorites(id).then((json)=>{
+      console.log(json);
+      
+    })
+
+  }
   return (
     <div style={{ margin: 10, height: "400px" }}>
       <Card
@@ -117,7 +126,7 @@ const MyBusinessCard = ({
           </Button>
           {verifyToken() && (
             <>
-              <Button onClick={handleFavClick} size="small" color="primary">
+              <Button onClick={()=>handleSetFavs(cardId as string)} size="small" color="primary">
                 <FavoriteBorderOutlinedIcon style={{ color: active ? "red" : "" }} />
               </Button>
             </>

@@ -82,10 +82,11 @@ const cardSchema = new mongoose.Schema(
     lng: {
       type: Number
     },
-    favorite: {
-      type: Boolean,
-      default: false
-    }
+      favorites: [{type: mongoose.Schema.Types.ObjectId, ref: 'User'}],
+    // favorite: {
+    //   type: Boolean,
+    //   default: false
+    // }
   },
   { timestamps: true }
 );

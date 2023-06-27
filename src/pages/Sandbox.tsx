@@ -3,8 +3,6 @@ import Title from "../components/Title";
 import {
   Button,
   Paper,
-  Switch,
-  Tab,
   Table,
   TableBody,
   TableCell,
@@ -23,8 +21,8 @@ import EditIcon from "@mui/icons-material/Edit";
 
 const Sandbox = () => {
   const [users, setUsers] = useState<Array<User>>([]);
-  const label = { inputProps: { "aria-label": "Switch demo" } };
-  const [business, setBusiness] = useState(false);
+  // const label = { inputProps: { "aria-label": "Switch demo" } };
+  // const [business, setBusiness] = useState(false);
   const [filteredData, setFilteredData] = useState<Array<User>>([]);
    const { searchValue } = useContext(SearchContext);
 
@@ -58,7 +56,7 @@ const Sandbox = () => {
   return (
     <>
       <Title mainText="ADMIN AREA" />
-
+<div style={{paddingBottom: 500}}>
       <h1 style={{ textAlign: "center", marginBottom: 50 }}>
         Users list
         <span> ( {users.length} )</span>
@@ -110,11 +108,9 @@ const Sandbox = () => {
                 </TableCell>
                
                 <TableCell align="right">{JSON.stringify(row.isBlocked)==="true"? "Yes": "No"}</TableCell>
-                  <TableCell align="right">{row.admin===true ? "":<Button><Link href={`/edituser/${row._id}`}><EditIcon /></Link></Button>}
-               
-                  <Button onClick={() => handleDelete(row._id as string)}>
-                    <DeleteIcon />
-                  </Button>
+                  <TableCell align="right">
+                    {row.admin===true ? "":<Button><Link style={{display: 'flex', alignItems: 'center',}} href={`/edituser/${row._id}`}><EditIcon /></Link></Button>}
+           {row.admin===true ? "": <Button onClick={() => handleDelete(row._id as string)}><DeleteIcon /></Button>}
                 </TableCell>
               
               </TableRow>
@@ -128,7 +124,7 @@ const Sandbox = () => {
         (filteredData.length === 0 && (
           <div style={{ textAlign: "center" }}>No users to display</div>
         ))}
-        
+        </div>
     </>
   );
 };

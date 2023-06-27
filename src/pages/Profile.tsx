@@ -26,38 +26,38 @@ const Profile = () => {
 
   const myUser = getUser()
   
-  useEffect(() => {
-    // if (!id) return;
-    getUserById(myUser._id).then((json) => {
-      var cleanFirstName = JSON.stringify(json[0].firstName).replace( /['"]+/g, "");
-      var cleanMiddleName = JSON.stringify(json[0].middleName).replace( /['"]+/g, "");
-      var cleanLastName = JSON.stringify(json[0].lastName).replace(/['"]+/g,"");
-      var cleanPhone = JSON.stringify(json[0].phone).replace(/['"]+/g, "");
-      var cleanImageUrl = JSON.stringify(json[0].imageUrl).replace(/['"]+/g, "");
-      var cleanImageAlt = JSON.stringify(json[0].imageAlt).replace(/['"]+/g, "");
-      var cleanState = JSON.stringify(json[0].state).replace(/['"]+/g, "");
-      var cleanCountry = JSON.stringify(json[0].country).replace(/['"]+/g, "");
-      var cleanCity = JSON.stringify(json[0].city).replace(/['"]+/g, "");
-      var cleanStreet = JSON.stringify(json[0].street).replace(/['"]+/g, "");
-      var cleanHouseNumber = JSON.stringify(json[0].houseNumber).replace(/['"]+/g,"");
-      var cleanZip = JSON.stringify(json[0].zip).replace(/['"]+/g, "");
-      var cleanBusiness = JSON.stringify(json[0].business).replace(/['"]+/g, "");
+  // useEffect(() => {
+  //   // if (!id) return;
+  //   getUserById(myUser._id).then((json) => {
+  //     var cleanFirstName = JSON.stringify(json[0].firstName).replace( /['"]+/g, "");
+  //     var cleanMiddleName = JSON.stringify(json[0].middleName).replace( /['"]+/g, "");
+  //     var cleanLastName = JSON.stringify(json[0].lastName).replace(/['"]+/g,"");
+  //     var cleanPhone = JSON.stringify(json[0].phone).replace(/['"]+/g, "");
+  //     var cleanImageUrl = JSON.stringify(json[0].imageUrl).replace(/['"]+/g, "");
+  //     var cleanImageAlt = JSON.stringify(json[0].imageAlt).replace(/['"]+/g, "");
+  //     var cleanState = JSON.stringify(json[0].state).replace(/['"]+/g, "");
+  //     var cleanCountry = JSON.stringify(json[0].country).replace(/['"]+/g, "");
+  //     var cleanCity = JSON.stringify(json[0].city).replace(/['"]+/g, "");
+  //     var cleanStreet = JSON.stringify(json[0].street).replace(/['"]+/g, "");
+  //     var cleanHouseNumber = JSON.stringify(json[0].houseNumber).replace(/['"]+/g,"");
+  //     var cleanZip = JSON.stringify(json[0].zip).replace(/['"]+/g, "");
+  //     var cleanBusiness = JSON.stringify(json[0].business).replace(/['"]+/g, "");
 
-      setFirstName(cleanFirstName);
-      setMiddleName(cleanMiddleName);
-      setLastName(cleanLastName);
-      setPhone(cleanPhone);
-      setImageUrl(cleanImageUrl);
-      setImageAlt(cleanImageAlt);
-      setState(cleanState);
-      setCountry(cleanCountry);
-      setCity(cleanCity);
-      setStreet(cleanStreet);
-      setHouseNumber(cleanHouseNumber);
-      setZip(cleanZip);
-      setBusiness(JSON.parse(cleanBusiness));
-    });
-  }, [myUser._id]);
+  //     setFirstName(cleanFirstName);
+  //     setMiddleName(cleanMiddleName);
+  //     setLastName(cleanLastName);
+  //     setPhone(cleanPhone);
+  //     setImageUrl(cleanImageUrl);
+  //     setImageAlt(cleanImageAlt);
+  //     setState(cleanState);
+  //     setCountry(cleanCountry);
+  //     setCity(cleanCity);
+  //     setStreet(cleanStreet);
+  //     setHouseNumber(cleanHouseNumber);
+  //     setZip(cleanZip);
+  //     setBusiness(JSON.parse(cleanBusiness));
+  //   });
+  // }, [myUser._id]);
 
   function validate(): boolean {
     if (!firstName || firstName.length < 2) {

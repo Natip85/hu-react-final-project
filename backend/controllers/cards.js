@@ -1,4 +1,5 @@
 const Card = require("../models/Card");
+const User = require("../models/User");
 const joi = require("joi");
 
 module.exports = {
@@ -6,7 +7,6 @@ module.exports = {
     try {
       const result = await Card.find();
       res.json(result);
-      console.log(result);
     } catch (err) {
       console.log(err);
       res.status(400).json({ error: "error getting cards" });
@@ -97,28 +97,28 @@ module.exports = {
       res.status(400).json({ error: "error getting your cards" });
     }
   },
-  myFavs: async function (req, res, next) {
-    try {
-      const scheme = joi.object({
-        _id: joi.string(),
-      });
+  // myFavs: async function (req, res, next) {
+  //   try {
+  //     const scheme = joi.object({
+  //       _id: joi.string(),
+  //     });
 
-      const { error, value } = scheme.validate({ _id: req.params._id });
-      
-      if (error) {
-        console.log(error.details[0].message);
-        res.status(400).json({ error: "invalid data" });
-        return;
-      }
+  //     const { error, value } = scheme.validate({ _id: req.params._id });
 
-      const result = await Card.find({ _id: value._id });
+  //     if (error) {
+  //       console.log(error.details[0].message);
+  //       res.status(400).json({ error: "invalid data" });
+  //       return;
+  //     }
 
-      res.json(result);
-    } catch (err) {
-      console.log(err);
-      res.status(400).json({ error: "error getting your cards" });
-    }
-  },
+  //     const result = await Card.find({ _id: value._id });
+
+  //     res.json(result);
+  //   } catch (err) {
+  //     console.log(err);
+  //     res.status(400).json({ error: "error getting your cards" });
+  //   }
+  // },
   delete: async function (req, res, next) {
     try {
       const scheme = joi.object({
@@ -185,37 +185,108 @@ module.exports = {
       res.status(400).json({ error: "fail to update data" });
     }
   },
-  favs: async function (req, res, next) {
+  getUserFavoriteCards: async function (req, res, next) {
     try {
-      const scheme = joi.object({
-        _id: joi.string().required(),
-      });
-
-      const { error, value } = scheme.validate({ _id: req.params.id });
-
-      if (error) {
-        console.log(error.details[0].message);
-        res.status(400).json({ error: "invalid data" });
-        return;
+      // console.log(req.user);
+      const user = await User.findById(req.user._id).populate('favorites');
+      if (!user) {
+        return res.status(404).json({ message: "User not found" });
       }
 
-      const fav = await Card.findOne({ _id: req.params.id });
+      
+      const favoriteCards = user.favorites
 
-      if (fav) {
-        fav.favorite = !fav.favorite;
-      }
-
-      const favorite = await Card.findOneAndUpdate(
-        {
-          _id: req.params.id,
-        },
-        fav
-      );
-
-      res.json(favorite);
+      return res.status(200).json( favoriteCards );
     } catch (err) {
       console.log(err);
-      res.status(400).json({ error: "fail to update data" });
+      res.status(500).json({
+        status: "fail",
+        message: err.message,
+      });
     }
   },
+  setFavorite: async function (req, res, next) {
+    const cardId = req.params.id;
+    const userId = req.user._id;
+    let status = false;
+// console.log(req.user.id);
+    try {
+      const card = await Card.findById(cardId);
+      const user = await User.findById(userId);
+      if (!card) {
+        return res.status(404).json({ message: "Card not found" });
+      }
+
+      const cardIndex = card.favorites.indexOf(userId);
+      const userIndex = user.favorites.indexOf(cardId);
+
+      if (cardIndex === -1) {
+        card.favorites.push(userId);
+        status = true;
+      } else {
+        card.favorites.splice(cardIndex, 1);
+        status = false;
+      }
+
+      if (userIndex === -1) {
+        user.favorites.push(cardId);
+      } else {
+        user.favorites.splice(userIndex, 1);
+      }
+
+      await card.save();
+      await user.save();
+      const { title } = card;
+
+      return res.status(200).json({ title, status });
+    } catch (err) {
+      console.log(err);
+      res.status(500).json({
+        status: "fail",
+        message: err.message,
+      });
+    }
+  },
+//   removeFavorite: async function (req, res, next) {
+//     const cardId = req.params.id;
+//     const userId = req.user._id;
+//     let status = false;
+// // console.log(req.user.id);
+//     try {
+//       const card = await Card.findById(cardId);
+//       const user = await User.findById(userId);
+//       if (!card) {
+//         return res.status(404).json({ message: "Card not found" });
+//       }
+
+//       const cardIndex = card.favorites.indexOf(userId);
+//       const userIndex = user.favorites.indexOf(cardId);
+
+//       if (cardIndex === -1) {
+//         card.favorites.push(userId);
+//         status = true;
+//       } else {
+//         card.favorites.slice(cardIndex, 1);
+//         status = false;
+//       }
+
+//       if (userIndex === -1) {
+//         user.favorites.push(cardId);
+//       } else {
+//         user.favorites.slice(userIndex, 1);
+//       }
+
+//       await card.save();
+//       await user.save();
+//       const { title } = card;
+
+//       return res.status(200).json({ title, status });
+//     } catch (err) {
+//       console.log(err);
+//       res.status(500).json({
+//         status: "fail",
+//         message: err.message,
+//       });
+//     }
+//   },
 };

@@ -27,6 +27,7 @@ const Home = () => {
   useEffect(() => {
     getCards().then((json) => {
       setCards(json);
+      
      setFilteredData(json)
     });
   }, []);

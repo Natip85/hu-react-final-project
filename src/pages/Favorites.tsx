@@ -1,32 +1,29 @@
-import React, { useContext, useEffect, useState } from "react";
-import { AppContext } from "../App";
+import React, { useEffect, useState } from "react";
 import { Card } from "../interfaces/ICardType";
-import { getCardsById } from "../api/apiServices";
+import { getFavorites } from "../api/apiServices";
 import Title from "../components/Title";
-import MyBusinessCard from "../components/MyBusinessCards";
+import { Grid } from "@mui/material";
+import BusinessCard from "../components/BusinessCard";
 
 const Favorites = () => {
-  const context = useContext(AppContext);
-  const [oGfavCards, setOgFavCards] = useState<Array<Card>>([]);
+  const [favCards, setFavCards] = useState<Array<Card>>([]);
 
   useEffect(() => {
-    getCardsById(context?.user).then((json) => {
-      setOgFavCards(json);
+    getFavorites().then((json) => {
+      setFavCards(json);
     });
   }, []);
-
 
   return (
     <>
       <Title mainText="My favorite business cards" />
-
-      {oGfavCards.map(
-
-        (card) =>
-           card.favorite &&
-            <MyBusinessCard key={card._id} {...card} cardId={card._id} />
-          
-      )}
+      <div style={{ paddingBottom: 500 }}>
+        <Grid sx={{ justifyContent: "center" }} container>
+          {favCards.map((card) => (
+            <BusinessCard key={card._id} {...card} cardId={card._id} />
+          ))}
+        </Grid>
+      </div>
     </>
   );
 };

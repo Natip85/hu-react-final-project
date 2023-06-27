@@ -18,6 +18,14 @@ import { Box, Button, Modal, TextField, Typography } from "@mui/material";
 import { toast } from "react-toastify";
 import useMediaQuery from "../hooks/useMediaQuery";
 import { LatLngTuple } from "leaflet";
+import { GoogleMap, InfoWindowF, LoadScript, MarkerF, useJsApiLoader } from "@react-google-maps/api";
+
+const containerStyle = {
+  width: '575px',
+  height: '575px'
+};
+
+
 
 export interface EventTypes {
   _id?: string | null;
@@ -45,7 +53,11 @@ const CardDetails = () => {
   const [lng, setLng] = useState(0);
   const navigate = useNavigate();
   const position: LatLngTuple = [lat, lng];
-  
+
+  const { isLoaded } = useJsApiLoader({
+    id: 'google-map-script',
+    googleMapsApiKey: "AIzaSyDeRdfT5_5oVCkUqJL_lpV7-_sRbs0WmCA"
+  })
 
   useEffect(() => {
     if (!id) return;
@@ -244,25 +256,33 @@ const CardDetails = () => {
               </Modal>
             </div>
 
+
+ 
+
             <div style={{ minWidth: "650px", height: "550px", marginTop: 100 }}>
             
-              <MapContainer
-            center={position}
-            zoom={50}
-            scrollWheelZoom={false}
-          >
-            <TileLayer
-              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            />
-            <Marker
-              position={position}
-            >
-              <Popup>
-                A pretty CSS3 popup. <br /> Easily customizable.
-                <Link to="/add-dish">GO!</Link>
-              </Popup>
-            </Marker>
-          </MapContainer>
+            {isLoaded ? (
+      <GoogleMap
+        mapContainerStyle={containerStyle}
+        center={{lat: lat, lng: lng}}
+        zoom={10}
+        // onLoad={onLoad}
+        // onUnmount={onUnmount}
+      >
+        <>
+        <MarkerF
+        position={{lat: lat, lng: lng}}
+        />
+        {/* <InfoWindowF
+        position={{lat: lat, lng: lng}}
+        // zIndex={1}
+        >
+<></>
+        </InfoWindowF> */}
+        { /* Child components, such as markers, info windows, etc. */ }
+        </>
+      </GoogleMap>
+  ) : <></>}
             </div>
           </div>
         </>
@@ -334,30 +354,29 @@ const CardDetails = () => {
             </div>
 
             <div style={{ minWidth: "650px", height: "550px", marginTop: 100 }}>
-              <MapContainer
-                center={[51.505, -0.09]}
-                zoom={13}
-                scrollWheelZoom={false}
-              >
-                <TileLayer
-                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                />
-                <Marker
-                  position={[51.505, -0.09]}
-                  icon={
-                    new Icon({
-                      iconUrl: require("leaflet/dist/images/marker-icon.png"),
-                      iconSize: [25, 41],
-                      iconAnchor: [12, 41],
-                    })
-                  }
-                >
-                  <Popup>
-                    A pretty CSS3 popup. <br /> Easily customizable.
-                    <Link to="/add-dish">GO!</Link>
-                  </Popup>
-                </Marker>
-              </MapContainer>
+   {isLoaded ? (
+      <GoogleMap
+        mapContainerStyle={containerStyle}
+        center={{lat: lat, lng: lng}}
+        zoom={10}
+        // onLoad={onLoad}
+        // onUnmount={onUnmount}
+      >
+        <>
+        <MarkerF
+        position={{lat: lat, lng: lng}}
+        />
+        {/* <InfoWindowF
+        position={{lat: lat, lng: lng}}
+        // zIndex={1}
+        >
+<></>
+        </InfoWindowF> */}
+        { /* Child components, such as markers, info windows, etc. */ }
+        </>
+      </GoogleMap>
+  ) : <></>}
+           
             </div>
           </div>
         </>

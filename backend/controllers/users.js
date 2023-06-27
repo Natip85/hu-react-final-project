@@ -4,12 +4,15 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const config = require("../config/dev");
 
+const signToken = (_id) => {
+  return jwt.sign({ _id }, config.jwt_token, {expiresIn: "72800s"});
+};
+
 module.exports = {
   allUsers: async function (req, res, next) {
     try {
       const result = await User.find();
       res.json(result);
-      console.log(result);
     } catch (err) {
       console.log(err);
       res.status(400).json({ error: "error getting users" });
@@ -200,9 +203,13 @@ module.exports = {
 
       user.loginAttempts = 0;
       await user.save();
-
-      const param = { email: value.email };
-      const token = jwt.sign(param, config.jwt_token, { expiresIn: "72800s" });
+// console.log(user._id);
+      // const param = { email: value.email };
+      // const token = jwt.sign(param, config.jwt_token, { expiresIn: "72800s" });
+//       const user_id = req.user
+// req.user = user
+// console.log(req.token);
+const token = signToken(user._id);
 
       res.json({
         token: token,
@@ -212,6 +219,7 @@ module.exports = {
         admin: user.admin,
         business: user.business,
         isBlocked: user.isBlocked,
+        favorites: user.favorites
       });
     } catch (err) {
       const user = await User.findOne({ email: req.body.email });

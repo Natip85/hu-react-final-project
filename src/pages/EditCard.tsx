@@ -3,14 +3,14 @@ import Title from "../components/Title";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { editCards, getCardById } from "../api/apiServices";
 import { Button, TextField } from "@mui/material";
-import { Card } from "../interfaces/ICardType";
+// import { Card } from "../interfaces/ICardType";
 import { toast } from "react-toastify";
 
 
 const EditCard = () => {
   const { id } = useParams();
    const navigate = useNavigate();
-  const [card, setCard] = useState<Card>();
+  // const [card, setCard] = useState<Card>();
   const [title, setTitle] = useState("");
   const [subtitle, setSubtitle] = useState("");
   const [description, setDescription] = useState("");
@@ -47,7 +47,7 @@ const EditCard = () => {
       var cleanZip= JSON.stringify(json.zip).replace(/['"]+/g, '')
       
 
-      setCard(json);
+      // setCard(json);
       setTitle(cleanTitle);
       setSubtitle(cleanSubtitle);
       setDescription(cleanDescription);
@@ -142,7 +142,7 @@ const EditCard = () => {
     <>
       <Title mainText="EDIT" />
 
-      
+      <div style={{paddingBottom: 300}} className="formWrap">
         <div
           style={{
             width: "100%",
@@ -347,7 +347,7 @@ const EditCard = () => {
             </Button>
           </div>
         </div>
-     
+     </div>
     </>
   );
 };

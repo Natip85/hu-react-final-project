@@ -6,9 +6,12 @@ import Typography from "@mui/material/Typography";
 import { Button, CardActionArea, CardActions, Divider, Link } from "@mui/material";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import CallSharpIcon from "@mui/icons-material/CallSharp";
-import { verifyToken } from "../auth/TokenManager";
-import { changeFav } from "../api/apiServices";
-import { useEffect, useState } from "react";
+import {  verifyToken } from "../auth/TokenManager";
+// import { changeFav } from "../api/apiServices";
+import {  useState } from "react";
+import {  setFavorites } from "../api/apiServices";
+
+// const user = getUser()
 
 export interface CardProps {
   _id?: string;
@@ -28,6 +31,7 @@ export interface CardProps {
   zip?: string;
   timestamps?: string;
   cardId?: string;
+  status?: boolean
 }
 
 const BusinessCard = ({
@@ -48,20 +52,27 @@ const BusinessCard = ({
   timestamps,
   cardId,
 }: CardProps) => {
-  const [active, setActive] = useState(false);
+  // const [active, setActive] = useState(false);
+  const [red, setRed]=useState<boolean>()
 
-  useEffect(() => {
-    const data = localStorage.getItem("red");
-    if (data !== null) setActive(JSON.parse(data));
-  }, []);
+  // useEffect(() => {
+  //   const data = localStorage.getItem("red");
+  //   if (data !== null) setActive(JSON.parse(data));
+  // }, []);
 
   function callNumber(number: any) {
     window.location.href = `tel:${phone}`;
   }
 
-  async function handleFavClick() {
-    await changeFav(cardId as string);
-    setActive(!active);
+  // async function handleFavClick() {
+  //   await changeFav(cardId as string);
+  //   setActive(!active);
+  // }
+
+  async function handleSetFavs(id: string){
+    await setFavorites(id).then((json)=>{
+      setRed(json.status)
+    })
   }
 
   return (
@@ -125,8 +136,8 @@ const BusinessCard = ({
             </Button>
             {verifyToken() && (
               <>
-                <Button onClick={handleFavClick} size="small" color="primary">
-                  <FavoriteIcon style={{ color: active ? "red" : "" }} />
+                <Button onClick={()=>handleSetFavs(cardId as string)} size="small" color="primary">
+                  <FavoriteIcon style={{ color: red ? "red" : "" }} />
                 </Button>
                 
               </>

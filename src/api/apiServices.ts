@@ -1,3 +1,4 @@
+import { getToken } from "../auth/TokenManager";
 import { Card } from "../interfaces/ICardType";
 import { User } from "../interfaces/IUserType";
 import { EventTypes } from "../pages/CardDetails";
@@ -34,7 +35,7 @@ export async function getUsers(): Promise<Array<User>> {
   return res.json();
 }
 
-export async function getUserById(_id: string): Promise<Array<User>> {
+export async function getUserById(_id: string): Promise<User> {
   const res = await fetch(`${usersUrl}myuser/${_id}`, {
     headers: {
       // 'x-auth-token': getToken()
@@ -126,18 +127,26 @@ export async function deleteCard(_id: string): Promise<Card> {
   return res.json();
 }
 
-export async function changeFav(_id: string): Promise<Card> {
-  const res = await fetch(`${cardsUrl}favs/${_id}`, {
-    method: "PATCH",
+export async function getFavorites(): Promise<Array<Card>> {
+  const res = await fetch(`${cardsUrl}favs`, {
     headers: {
-      // 'x-auth-token': getToken()
-    },
+      'x-auth-token': getToken()
+    }
   });
   return res.json();
 }
 
-
-
+export async function setFavorites(id: string): Promise<Card> {
+  const res = await fetch(`${cardsUrl}${id}`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      'x-auth-token': getToken()
+    },
+    // body: JSON.stringify(id),
+  });
+  return res.json();
+}
 
 
 export async function getEvents(): Promise<Array<EventTypes>> {

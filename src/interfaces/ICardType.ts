@@ -24,6 +24,8 @@ export interface Card {
    lat?: number 
   lng?: number 
   favorite?: Boolean 
+  favoriteCards?: any
+  status?: boolean
 }
 
 

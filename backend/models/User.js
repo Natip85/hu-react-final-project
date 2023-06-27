@@ -42,19 +42,6 @@ const userSchema = new mongoose.Schema(
       minlength: [8, "Min 8 characters required."],
       maxlength: [200, "Max 200 characters allowed."],
     },
-    //   password: {
-    //   type: String,
-    // required: [true, "Please provide a password."],
-    //   minlength: [8, "Min 8 characters required."],
-    //   maxlength: [200, "Max 200 characters allowed."],
-    //   validate: {
-    //     validator: function (password) {
-    //       const passwordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*()_\-+=?]).{8,}$/;
-    //       return passwordRegex.test(password);
-    //     },
-    //     message: 'Password must contain at least one uppercase letter, one lowercase letter, at least four numbers, and a special character.',
-    //   },
-    // },
     imageUrl: {
       type: String,
     },
@@ -101,6 +88,7 @@ const userSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    favorites: [{type: mongoose.Schema.Types.ObjectId, ref: 'Card'}]
   },
   { timestamps: true }
 );

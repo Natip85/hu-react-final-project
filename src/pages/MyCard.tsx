@@ -30,7 +30,7 @@ const MyCard = () => {
       setCards(json);
        setFilteredData(json)
     });
-  }, []);
+  }, [myUser._id]);
 
     useEffect(() => {
     const filtered = cards.filter(
@@ -42,11 +42,13 @@ const MyCard = () => {
   }, [searchValue, cards]);
 
   async function onDelete(_id: string) {
+     if (window.confirm(`Are you sure to delete ${_id}?`)) {
     await deleteCard(_id);
     const updated = [...cards].filter((card) => card._id !== _id);
     setCards(updated);
 
     toast.success("Card has been deleted.");
+     }
   }
 
   function onEdit(_id: string) {
@@ -56,10 +58,7 @@ const MyCard = () => {
   return (
     <>
       <Title mainText="My cards" />
-      {!cards ||
-        (cards.length === 0 && (
-          <div style={{ textAlign: "center" }}>No cards to display</div>
-        ))}
+      <div style={{paddingBottom: 300}}>
          {!filteredData ||
         (filteredData.length === 0 && (
           <div style={{ textAlign: "center" }}>No cards to display</div>
@@ -67,12 +66,12 @@ const MyCard = () => {
       <div className="cardsWrap">
         <CardContext.Provider value={{ onDelete, onEdit }}>
           {filteredData.map((card) => (
-            <MyBusinessCard key={card._id} {...card} />
+            <MyBusinessCard key={card._id} {...card} cardId={card._id}/>
           ))}
         </CardContext.Provider>
       </div>
 
-      <div style={{ position: "absolute", bottom: "12%", right: "5%" }}>
+      <div style={{ position: "absolute", bottom: "12%", right: "5%", }}>
         <Stack direction="row" spacing={2}>
           <Link to="/addcards">
             <Button
@@ -87,6 +86,7 @@ const MyCard = () => {
             </Button>
           </Link>
         </Stack>
+      </div>
       </div>
     </>
   );
