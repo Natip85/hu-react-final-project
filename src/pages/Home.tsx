@@ -13,22 +13,29 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import { Button, Grid, Link } from "@mui/material";
+import { Box, Button, Container, Grid, Link } from "@mui/material";
 import { SearchContext } from "../hooks/SearchContext";
-
+import SkeletonCard from "../components/SkeletonCard";
 
 const Home = () => {
   const [cards, setCards] = useState<Array<Card>>([]);
   const [displayMode, setDisplayMode] = useState("grid");
   const [filteredData, setFilteredData] = useState<Array<Card>>([]);
-   const { searchValue } = useContext(SearchContext);
+  const { searchValue } = useContext(SearchContext);
+  const [loading, setLoading] = useState(true);
 
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 2000);
+    return () => clearTimeout(timer);
+  }, []);
 
   useEffect(() => {
     getCards().then((json) => {
       setCards(json);
-      
-     setFilteredData(json)
+
+      setFilteredData(json);
     });
   }, []);
 
@@ -41,17 +48,17 @@ const Home = () => {
     setFilteredData(filtered);
   }, [searchValue, cards]);
 
-
   function handleDisplayChange(mode: string) {
     setDisplayMode(mode);
   }
 
   return (
     <>
-      <Title mainText="Find a business today!" subText="Check out our top businesses." />
+      <Title
+        mainText="Find a business today!"
+        subText="Check out our top businesses."
+      />
 
-
-      
       <div
         style={{
           overflowY: "auto",
@@ -59,21 +66,22 @@ const Home = () => {
           margin: "50px auto",
           display: "flex",
           justifyContent: "center",
+          flexDirection: 'column',
+          alignItems: 'center'
         }}
         className={displayMode}
       >
-        <div>
-        <Button  onClick={() => handleDisplayChange("list")}>
-          List
-          <FormatListBulletedIcon />
-        </Button>
-        <Button onClick={() => handleDisplayChange("grid")}>
-          Grid
-          <ViewModuleIcon />
-        </Button>
-      </div>
+        <div style={{marginBottom: 30}}>
+          <Button onClick={() => handleDisplayChange("list")}>
+            List
+            <FormatListBulletedIcon />
+          </Button>
+          <Button onClick={() => handleDisplayChange("grid")}>
+            Grid
+            <ViewModuleIcon />
+          </Button>
+        </div>
         {!cards || (cards.length === 0 && <div>No cards to display</div>)}
-   
 
         {displayMode === "list" && (
           <>
@@ -92,9 +100,7 @@ const Home = () => {
                 </TableHead>
                 <TableBody>
                   {cards.map((row) => (
-                   
                     <TableRow
-                      
                       key={row._id}
                       sx={{
                         "&:last-child td, &:last-child th": {
@@ -122,13 +128,16 @@ const Home = () => {
                       <TableCell align="right">{row.street}</TableCell>
                       <TableCell align="right">
                         <Link href={`/card-details/${row._id}`}>
-                        <Button size="small" variant="contained" color="primary">
-                          Contact Us
-                        </Button>
+                          <Button
+                            size="small"
+                            variant="contained"
+                            color="primary"
+                          >
+                            Contact Us
+                          </Button>
                         </Link>
                       </TableCell>
                     </TableRow>
-                  
                   ))}
                 </TableBody>
               </Table>
@@ -137,14 +146,36 @@ const Home = () => {
         )}
         {displayMode === "grid" && (
           <>
+{!filteredData ||
+              (filteredData.length === 0 && <div>No cards to display</div>)}
+          <Container>
+            <Box>
+               <Grid container spacing={2}>
 
-          {!filteredData || (filteredData.length === 0 && <div>No cards to display</div>)}
+                {filteredData.map((card)=>(
+                  <Grid item xs={11} sm={6} md={4} key={card._id}>
+                     {loading ? (
+                  <SkeletonCard />
+                ) : (
+                  <BusinessCard key={card._id} {...card} cardId={card._id} />
+                )}
+                  </Grid>
+                ))}
+               </Grid>
+            </Box>
+          </Container>
+            {/* {!filteredData ||
+              (filteredData.length === 0 && <div>No cards to display</div>)}
 
-          <Grid sx={{justifyContent: 'center'}} container>
             {filteredData.map((card) => (
-              <BusinessCard key={card._id} {...card} cardId={card._id} />
-            ))}
-            </Grid>
+              <Grid sx={{ justifyContent: "center" }} container>
+                {loading ? (
+                  <SkeletonCard />
+                ) : (
+                  <BusinessCard key={card._id} {...card} cardId={card._id} />
+                )}
+              </Grid>
+            ))} */}
           </>
         )}
       </div>

@@ -42,6 +42,9 @@ const userSchema = new mongoose.Schema(
       minlength: [8, "Min 8 characters required."],
       maxlength: [200, "Max 200 characters allowed."],
     },
+    image:{
+      type: String
+    },
     imageUrl: {
       type: String,
     },

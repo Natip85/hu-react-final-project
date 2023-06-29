@@ -87,6 +87,9 @@ module.exports = {
     }
   },
   signup: async function (req, res, next) {
+   
+    const {base64}=req.body
+console.log("THIS IS BASE",base64);
     const schema = joi.object({
       admin: joi.boolean(),
       firstName: joi.string().required().min(2).max(100),
@@ -106,6 +109,7 @@ module.exports = {
       business: joi.boolean(),
       lat: joi.number(),
       lng: joi.number(),
+      image: joi.object()
     });
 
     const { error, value } = schema.validate(req.body);
@@ -142,6 +146,7 @@ module.exports = {
         business: value.business,
         lat: value.lat,
         lng: value.lng,
+        image: base64
       });
 
       await newUser.save();

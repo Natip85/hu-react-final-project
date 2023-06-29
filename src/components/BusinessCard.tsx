@@ -6,12 +6,10 @@ import Typography from "@mui/material/Typography";
 import { Button, CardActionArea, CardActions, Divider, Link } from "@mui/material";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import CallSharpIcon from "@mui/icons-material/CallSharp";
-import {  verifyToken } from "../auth/TokenManager";
-// import { changeFav } from "../api/apiServices";
+import {  getUser, verifyToken } from "../auth/TokenManager";
 import {  useState } from "react";
 import {  setFavorites } from "../api/apiServices";
 
-// const user = getUser()
 
 export interface CardProps {
   _id?: string;
@@ -32,6 +30,7 @@ export interface CardProps {
   timestamps?: string;
   cardId?: string;
   status?: boolean
+  favorites?: [] | null
 }
 
 const BusinessCard = ({
@@ -51,29 +50,38 @@ const BusinessCard = ({
   zip,
   timestamps,
   cardId,
+  favorites
 }: CardProps) => {
-  // const [active, setActive] = useState(false);
-  const [red, setRed]=useState<boolean>()
+  const [isRedHeart, setIsRedHeart] = useState(false);
 
-  // useEffect(() => {
-  //   const data = localStorage.getItem("red");
-  //   if (data !== null) setActive(JSON.parse(data));
-  // }, []);
 
   function callNumber(number: any) {
     window.location.href = `tel:${phone}`;
   }
 
-  // async function handleFavClick() {
-  //   await changeFav(cardId as string);
-  //   setActive(!active);
-  // }
 
   async function handleSetFavs(id: string){
     await setFavorites(id).then((json)=>{
-      setRed(json.status)
     })
   }
+
+   const toggleRed = () => {
+    setIsRedHeart(!isRedHeart);
+  };
+
+    React.useEffect(() => {
+    const ifCardIsFavorite = (userId: string | null | undefined) => {
+      favorites?.forEach((id) => {
+        if (id === userId) {
+          setIsRedHeart(true);
+        }
+      });
+    };
+    const userObject = getUser();
+    if (userObject) {
+      ifCardIsFavorite(userObject._id);
+    }
+  }, [favorites]);
 
   return (
     <div style={{ margin: 10, height: "450px" }}>
@@ -95,8 +103,8 @@ const BusinessCard = ({
             <CardMedia
               component="img"
               height="140"
-              image={imageUrl}
-              alt={imageAlt}
+              image={imageUrl ? imageUrl : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"}
+              alt={imageAlt }
             />
            
             <CardContent>
@@ -136,8 +144,12 @@ const BusinessCard = ({
             </Button>
             {verifyToken() && (
               <>
-                <Button onClick={()=>handleSetFavs(cardId as string)} size="small" color="primary">
-                  <FavoriteIcon style={{ color: red ? "red" : "" }} />
+                <Button onClick={()=>{
+                  handleSetFavs(cardId as string)
+                   toggleRed();
+                }
+                } size="small" color="primary">
+                  <FavoriteIcon style={{ color: isRedHeart ? "red" : ""}} />
                 </Button>
                 
               </>

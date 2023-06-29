@@ -2,13 +2,15 @@ import React, { useEffect, useState } from 'react'
 import Title from '../components/Title'
 import { Box, Button, FormControl, InputLabel, MenuItem, Select, Switch, TextField } from '@mui/material'
 import { countryCoordinates } from "../interfaces/IUserType";
-import { useParams } from 'react-router-dom';
-import { getUserById } from '../api/apiServices';
+import { useNavigate, useParams } from 'react-router-dom';
+import { editUser, getUserById } from '../api/apiServices';
+import { getUser } from '../auth/TokenManager';
+import { toast } from 'react-toastify';
 
-type Props = {}
 
-const EditUser = (props: Props) => {
+const EditUser = () => {
   const { id } = useParams();
+  const navigate = useNavigate()
    const [firstName, setFirstName] = useState("");
   const [middleName, setMiddleName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -23,34 +25,53 @@ const EditUser = (props: Props) => {
   const [zip, setZip] = useState("");
   const [business, setBusiness] = useState(false);
   const label = { inputProps: { "aria-label": "Switch demo" } };
-
+ const myUser = getUser()
+ 
   useEffect(()=>{
-    console.log(id);
     if (!id) return;
 
-    getUserById(id ).then((json) => {
-      console.log(json);
-      
+    getUserById(id).then((json) => {
+       var cleanBusiness = JSON.stringify(json[0].business).replace(/['"]+/g, "");
+      const bzz = JSON.parse(cleanBusiness)
 
-      setFirstName(JSON.stringify(json.firstName));
-      setMiddleName(JSON.stringify(json.middleName));
-      setLastName(JSON.stringify(json.lastName));
-      setPhone(JSON.stringify(json.phone));
-      setImageUrl(JSON.stringify(json.imageUrl));
-      setImageAlt(JSON.stringify(json.imageAlt));
-      setState(JSON.stringify(json.state));
-      setCountry(JSON.stringify(json.country));
-      setCity(JSON.stringify(json.city));
-      setStreet(JSON.stringify(json.street));
-      setHouseNumber(JSON.stringify(json.houseNumber));
-      setZip(JSON.stringify(json.zip));
-      // setBusiness(json.business);
+      setFirstName(json[0].firstName as string);
+      setMiddleName(json[0].middleName as string);
+      setLastName(json[0].lastName as string);
+      setPhone(json[0].phone as string);
+      setImageUrl(json[0].imageUrl as string);
+      setImageAlt(json[0].imageAlt as string);
+      setState(json[0].state as string);
+      setCountry(json[0].country as string);
+      setCity(json[0].city as string);
+      setStreet(json[0].street as string);
+      setHouseNumber(json[0].houseNumber as string);
+      setZip(json[0].zip as string);
+      setBusiness(bzz);
     })
     
   }, [])
 
   function handleSubmit(){
+ if (!id) return;
 
+    editUser(id, {
+      firstName,
+      middleName,
+      lastName,
+      phone,
+      imageUrl,
+      imageAlt,
+      state,
+      country,
+      city,
+      street,
+      houseNumber,
+      zip,
+      business,
+    }).then((json) => {
+      toast.success("User edited successfully.");
+      navigate('/sandbox')
+    });
   }
   
   return (

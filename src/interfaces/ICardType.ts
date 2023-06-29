@@ -26,6 +26,8 @@ export interface Card {
   favorite?: Boolean 
   favoriteCards?: any
   status?: boolean
+   favorites?: [] | null;
+   onToggleFavorite?: Function
 }
 
 

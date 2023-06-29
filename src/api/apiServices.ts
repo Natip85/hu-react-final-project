@@ -35,7 +35,7 @@ export async function getUsers(): Promise<Array<User>> {
   return res.json();
 }
 
-export async function getUserById(_id: string): Promise<User> {
+export async function getUserById(_id: string): Promise<Array<User>> {
   const res = await fetch(`${usersUrl}myuser/${_id}`, {
     headers: {
       // 'x-auth-token': getToken()

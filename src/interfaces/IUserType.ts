@@ -7,7 +7,7 @@ export interface User {
   phone?: string;
   email?: string;
   password?: string;
-  imageUrl?: string;
+  imageUrl?: any | null;
   imageAlt?: string;
   state?: string;
   country?: string;
@@ -24,6 +24,8 @@ export interface User {
   lat?: number
   lng?: number
   isBlocked?: boolean
+  favorites?: [string] | null;
+  base64?: any
 }
 
 export const countryCoordinates = [

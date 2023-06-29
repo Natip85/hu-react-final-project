@@ -5,10 +5,6 @@ import { getCardById } from "../api/apiServices";
 import { Card } from "../interfaces/ICardType";
 import Title from "../components/Title";
 
-import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
-import "leaflet/dist/leaflet.css";
-import { Icon } from "leaflet";
-
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
@@ -17,15 +13,13 @@ import timeGridPlugin from "@fullcalendar/timegrid";
 import { Box, Button, Modal, TextField, Typography } from "@mui/material";
 import { toast } from "react-toastify";
 import useMediaQuery from "../hooks/useMediaQuery";
-import { LatLngTuple } from "leaflet";
-import { GoogleMap, InfoWindowF, LoadScript, MarkerF, useJsApiLoader } from "@react-google-maps/api";
+import { GoogleMap, MarkerF, useJsApiLoader } from "@react-google-maps/api";
+import { thepamsecretyek } from "../auth/TokenManager";
 
 const containerStyle = {
-  width: '575px',
-  height: '575px'
+  width: "575px",
+  height: "575px",
 };
-
-
 
 export interface EventTypes {
   _id?: string | null;
@@ -52,12 +46,11 @@ const CardDetails = () => {
   const [lat, setLat] = useState(0);
   const [lng, setLng] = useState(0);
   const navigate = useNavigate();
-  const position: LatLngTuple = [lat, lng];
 
   const { isLoaded } = useJsApiLoader({
-    id: 'google-map-script',
-    googleMapsApiKey: "AIzaSyDeRdfT5_5oVCkUqJL_lpV7-_sRbs0WmCA"
-  })
+    id: "google-map-script",
+    googleMapsApiKey: thepamsecretyek,
+  });
 
   useEffect(() => {
     if (!id) return;
@@ -186,7 +179,8 @@ const CardDetails = () => {
             </div>
           </div>
           <div>
-            <img style={{ width: "100%" }} src={card?.imageUrl} alt="" />
+            <img style={{ width: "100%" }}
+               src={card?.imageUrl ? card?.imageUrl:"https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"} alt="" />
           </div>
         </div>
       </div>
@@ -255,34 +249,20 @@ const CardDetails = () => {
                 </form>
               </Modal>
             </div>
-
-
- 
-
             <div style={{ minWidth: "650px", height: "550px", marginTop: 100 }}>
-            
-            {isLoaded ? (
-      <GoogleMap
-        mapContainerStyle={containerStyle}
-        center={{lat: lat, lng: lng}}
-        zoom={10}
-        // onLoad={onLoad}
-        // onUnmount={onUnmount}
-      >
-        <>
-        <MarkerF
-        position={{lat: lat, lng: lng}}
-        />
-        {/* <InfoWindowF
-        position={{lat: lat, lng: lng}}
-        // zIndex={1}
-        >
-<></>
-        </InfoWindowF> */}
-        { /* Child components, such as markers, info windows, etc. */ }
-        </>
-      </GoogleMap>
-  ) : <></>}
+              {isLoaded ? (
+                <GoogleMap
+                  mapContainerStyle={containerStyle}
+                  center={{ lat: lat, lng: lng }}
+                  zoom={10}
+                >
+                  <>
+                    <MarkerF position={{ lat: lat, lng: lng }} />
+                  </>
+                </GoogleMap>
+              ) : (
+                <></>
+              )}
             </div>
           </div>
         </>
@@ -354,29 +334,19 @@ const CardDetails = () => {
             </div>
 
             <div style={{ minWidth: "650px", height: "550px", marginTop: 100 }}>
-   {isLoaded ? (
-      <GoogleMap
-        mapContainerStyle={containerStyle}
-        center={{lat: lat, lng: lng}}
-        zoom={10}
-        // onLoad={onLoad}
-        // onUnmount={onUnmount}
-      >
-        <>
-        <MarkerF
-        position={{lat: lat, lng: lng}}
-        />
-        {/* <InfoWindowF
-        position={{lat: lat, lng: lng}}
-        // zIndex={1}
-        >
-<></>
-        </InfoWindowF> */}
-        { /* Child components, such as markers, info windows, etc. */ }
-        </>
-      </GoogleMap>
-  ) : <></>}
-           
+              {isLoaded ? (
+                <GoogleMap
+                  mapContainerStyle={containerStyle}
+                  center={{ lat: lat, lng: lng }}
+                  zoom={10}
+                >
+                  <>
+                    <MarkerF position={{ lat: lat, lng: lng }} />
+                  </>
+                </GoogleMap>
+              ) : (
+                <></>
+              )}
             </div>
           </div>
         </>

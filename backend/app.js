@@ -18,6 +18,7 @@ const auth = require('./middleware/auth');
 
 var app = express();
 
+
 app.use(cors())
 app.use(bodyParser.json());
 app.use(logger('dev'));

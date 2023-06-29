@@ -25,7 +25,7 @@ import { Visibility, VisibilityOff } from "@mui/icons-material";
 const Signup = () => {
   const navigate = useNavigate();
   const label = { inputProps: { "aria-label": "Switch demo" } };
-   const [showPassword, setShowPassword] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
   const firstNameProp = useTextInput("");
@@ -60,14 +60,16 @@ const Signup = () => {
       return false;
     }
 
-    const emailRe = /[a-z0-9\._%+!$&*=^|~#%'`?{}/\-]+@([a-z0-9\-]+\.){1,}([a-z]{2,16})/;
+    const emailRe =/[a-z0-9\._%+!$&*=^|~#%'`?{}/\-]+@([a-z0-9\-]+\.){1,}([a-z]{2,16})/;
     if (!emailRe.test(emailProp.value)) {
       toast.error("A valid email address is required.");
       return false;
     }
-const passRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d.*\d.*\d.*\d)(?=.*[!@#$%^&*()_\-+=?]).{8,}$/
+    const passRegex =/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d.*\d.*\d.*\d)(?=.*[!@#$%^&*()_\-+=?]).{8,}$/;
     if (!passwordProp.value || !passRegex.test(passwordProp.value)) {
-      toast.error("Password must contain at least 8 characters, 1 uppercase letter, 1 lowercase letter, 4 numbers and 1 special character.");
+      toast.error(
+        "Password must contain at least 8 characters, 1 uppercase letter, 1 lowercase letter, 4 numbers and 1 special character."
+      );
       return false;
     }
     if (!country) {
@@ -134,13 +136,12 @@ const passRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d.*\d.*\d.*\d)(?=.*[!@#$%^&*()_\
     setLng(result[0].coordinates.longitude);
   };
 
-    const handleMouseDownPassword = (
+  const handleMouseDownPassword = (
     event: React.MouseEvent<HTMLButtonElement>
   ) => {
     event.preventDefault();
   };
 
-  
   return (
     <div style={{ height: "100vh" }}>
       <Title mainText="REGISTER" />
@@ -156,14 +157,12 @@ const passRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d.*\d.*\d.*\d)(?=.*[!@#$%^&*()_\
           <TextField
             required
             style={{ width: "50%", marginRight: 5 }}
-            // id="outlined-basic"
             label="First name"
             variant="outlined"
             {...firstNameProp}
           />
           <TextField
             style={{ width: "50%" }}
-            // id="outlined-basic"
             label="Middle name"
             variant="outlined"
             {...middleNameProp}
@@ -181,7 +180,6 @@ const passRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d.*\d.*\d.*\d)(?=.*[!@#$%^&*()_\
           <TextField
             required
             style={{ width: "50%", marginRight: 5 }}
-            // id="outlined-basic"
             label="Last name"
             variant="outlined"
             {...lastNameProp}
@@ -189,7 +187,6 @@ const passRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d.*\d.*\d.*\d)(?=.*[!@#$%^&*()_\
           <TextField
             required
             style={{ width: "50%" }}
-            // id="outlined-basic"
             label="Phone"
             variant="outlined"
             {...phoneProp}
@@ -207,20 +204,11 @@ const passRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d.*\d.*\d.*\d)(?=.*[!@#$%^&*()_\
           <TextField
             required
             style={{ width: "50%", marginRight: 5 }}
-            // id="outlined-basic"
             label="Email"
             variant="outlined"
             {...emailProp}
           />
-          {/* <TextField
-            required
-            style={{ width: "50%" }}
-            id="outlined-basic"
-            label="Password"
-            variant="outlined"
-            {...passwordProp}
-          /> */}
-           <FormControl sx={{ width: "50%" }} variant="outlined">
+          <FormControl sx={{ width: "50%" }} variant="outlined">
             <InputLabel htmlFor="outlined-adornment-password">
               Password
             </InputLabel>
@@ -255,14 +243,13 @@ const passRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d.*\d.*\d.*\d)(?=.*[!@#$%^&*()_\
         >
           <TextField
             style={{ width: "50%", marginRight: 5 }}
-            // id="outlined-basic"
             label="imageUrl"
             variant="outlined"
             {...imageUrlProp}
           />
+
           <TextField
             style={{ width: "50%" }}
-            // id="outlined-basic"
             label="imageAlt"
             variant="outlined"
             {...imageAltProp}
@@ -300,7 +287,6 @@ const passRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d.*\d.*\d.*\d)(?=.*[!@#$%^&*()_\
           <TextField
             required
             style={{ width: "50%", marginRight: 5 }}
-            // id="outlined-basic"
             label="State"
             variant="outlined"
             {...stateProp}
@@ -318,7 +304,6 @@ const passRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d.*\d.*\d.*\d)(?=.*[!@#$%^&*()_\
           <TextField
             required
             style={{ width: "50%", marginRight: 5 }}
-            // id="outlined-basic"
             label="City"
             variant="outlined"
             {...cityProp}
@@ -326,7 +311,6 @@ const passRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d.*\d.*\d.*\d)(?=.*[!@#$%^&*()_\
           <TextField
             required
             style={{ width: "50%" }}
-            // id="outlined-basic"
             label="Street"
             variant="outlined"
             {...streetProp}
@@ -344,7 +328,6 @@ const passRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d.*\d.*\d.*\d)(?=.*[!@#$%^&*()_\
           <TextField
             required
             style={{ width: "50%", marginRight: 5 }}
-            // id="outlined-basic"
             label="House number"
             variant="outlined"
             {...houseNumberProp}
