@@ -27,7 +27,7 @@ const Login = () => {
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
   function validate(): boolean {
-    const emailRe =/[a-z0-9\._%+!$&*=^|~#%'`?{}/\-]+@([a-z0-9\-]+\.){1,}([a-z]{2,16})/;
+    const emailRe =/[a-z0-9\._%+!$&*=^|~#%'`?{}/\-]+@([a-z0-9\-]+\.){1,}([a-z]{2,16})/; //eslint-disable-line
     if (!emailRe.test(emailProp.value)) {
       toast.error("A valid email address is required.");
       return false;

@@ -5,11 +5,11 @@ type Props = {}
 
 const SkeletonCard = (props: Props) => {
   return (
-     <Stack spacing={1}>
+     <Stack sx={{margin: 3}} spacing={1}>
         <Skeleton
           animation="wave"
           height={20}
-          sx={{ display: "inline", borderTopLeftRadius: "10px", borderTopRightRadius: "10px" }}
+          sx={{ display: "inline", borderTopLeftRadius: "10px", borderTopRightRadius: "10px", }}
           width={300}
         />
         <Skeleton variant="circular" width={35} height={35} sx={{ display: "inline-block" }} />

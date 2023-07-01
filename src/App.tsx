@@ -20,9 +20,9 @@ import AddCard from "./pages/AddCard";
 import CardDetails from "./pages/CardDetails";
 import EditCard from "./pages/EditCard";
 import Profile from "./pages/Profile";
-import { SelectedPage } from "./interfaces/ICardType";
 import { getUser } from "./auth/TokenManager";
 import EditUser from "./pages/EditUser";
+import ResetPassword from "./pages/ResetPassword";
 
 export interface UserContext {
   userName: string;
@@ -50,9 +50,6 @@ function App() {
     userData ? userData.business : false
   );
   const [mode, setMode] = useState<"light" | "dark">("light");
-  const [selectedPage, setSelectedPage] = useState<SelectedPage>(
-    SelectedPage.About
-  );
 
   useEffect(() => {
     const handleScroll = () => {
@@ -117,7 +114,12 @@ function App() {
               <Route path="/" element={<Home />} />
               <Route path="signup" element={<Signup />} />
               <Route path="login" element={<Login />} />
-              <Route path="about" element={<About setSelectedPage={setSelectedPage} />} />
+              <Route path="about" element={<About />} />
+              <Route path="reset/:id" element={
+               <RouteGuard>
+              <ResetPassword />
+              </RouteGuard>
+              } />
               <Route
                 path="card-details/:id"
                 element={

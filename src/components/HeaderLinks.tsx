@@ -46,17 +46,7 @@ const HeaderLinks = () => {
         {/* </Tabs> */}
       </Box>
       <Box>
-        {user && user.business && (
-          <Tab
-            label="My Cards"
-            to="/mycards"
-            sx={{ color: "black", fontSize: "1rem" }}
-            component={Link}
-          />
-        )}
-      </Box>
-      <Box>
-        {verifyToken() && (
+          {verifyToken() && (
           <>
             <Tab
               label="My Favorites"
@@ -66,6 +56,16 @@ const HeaderLinks = () => {
             />
           </>
         )}
+      </Box>
+      <Box>
+      {user && user.business && (
+          <Tab
+            label="My Cards"
+            to="/mycards"
+            sx={{ color: "black", fontSize: "1rem" }}
+            component={Link}
+          />
+      )}
 
         {verifyAdmin() && (
           <Tab

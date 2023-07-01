@@ -2,7 +2,6 @@ import { User } from "../interfaces/IUserType";
 
 export const thepamsecretyek = "AIzaSyDeRdfT5_5oVCkUqJL_lpV7-_sRbs0WmCA"
 const tokenKey = "token";
-// const adminKey = "admin";
 
 export function setUser(user: User | null) {
   if (user) {
@@ -35,6 +34,7 @@ export function getToken(): string {
 
 export function removeToken() {
   localStorage.removeItem(tokenKey);
+  window.location.reload();
 }
 
 export function verifyToken(): boolean {

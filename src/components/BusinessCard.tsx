@@ -54,7 +54,20 @@ const BusinessCard = ({
 }: CardProps) => {
   const [isRedHeart, setIsRedHeart] = useState(false);
 
-
+  React.useEffect(() => {
+    const ifCardIsFavorite = (userId: string | null | undefined) => {
+      favorites?.forEach((id) => {
+        if (id === userId) {
+          setIsRedHeart(true);
+        }
+      });
+    };
+    const userObject = getUser();
+    if (userObject) {
+      ifCardIsFavorite(userObject._id);
+    }
+  }, [favorites]);
+  
   function callNumber(number: any) {
     window.location.href = `tel:${phone}`;
   }
@@ -69,26 +82,14 @@ const BusinessCard = ({
     setIsRedHeart(!isRedHeart);
   };
 
-    React.useEffect(() => {
-    const ifCardIsFavorite = (userId: string | null | undefined) => {
-      favorites?.forEach((id) => {
-        if (id === userId) {
-          setIsRedHeart(true);
-        }
-      });
-    };
-    const userObject = getUser();
-    if (userObject) {
-      ifCardIsFavorite(userObject._id);
-    }
-  }, [favorites]);
+  
 
   return (
     <div style={{ margin: 10, height: "450px" }}>
       <Card
         sx={{
-          maxWidth: 300,
-          minWidth: 300,
+          // maxWidth: 300,
+          // minWidth: 300,
           height: "100%",
           display: "flex",
           flexDirection: "column",

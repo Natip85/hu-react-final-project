@@ -3,9 +3,10 @@ const joi = require("joi");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const config = require("../config/dev");
+const sendEmail = require("./../utils/mail");
 
 const signToken = (_id) => {
-  return jwt.sign({ _id }, config.jwt_token, {expiresIn: "72800s"});
+  return jwt.sign({ _id }, config.jwt_token, { expiresIn: "72800s" });
 };
 
 module.exports = {
@@ -87,9 +88,6 @@ module.exports = {
     }
   },
   signup: async function (req, res, next) {
-   
-    const {base64}=req.body
-console.log("THIS IS BASE",base64);
     const schema = joi.object({
       admin: joi.boolean(),
       firstName: joi.string().required().min(2).max(100),
@@ -109,14 +107,13 @@ console.log("THIS IS BASE",base64);
       business: joi.boolean(),
       lat: joi.number(),
       lng: joi.number(),
-      image: joi.object()
     });
 
     const { error, value } = schema.validate(req.body);
 
     if (error) {
       console.log(error.details[0].message);
-      res.status(400).json({ error: error.details[0].message});
+      res.status(400).json({ error: error.details[0].message });
       return;
     }
     try {
@@ -146,10 +143,16 @@ console.log("THIS IS BASE",base64);
         business: value.business,
         lat: value.lat,
         lng: value.lng,
-        image: base64
       });
 
       await newUser.save();
+
+      await sendEmail({
+        email: newUser.email,
+        subject: "Thank you for registering.",
+        // message: "We can't wait to show you what we have in store!",
+        html: ` <h1>We can't wait to show you what we have in store!</h1> <a href="http://localhost:3001"><button style="background-color:blue; border: none; color: white; height: 35px; cursor: pointer; ">Go to Bcard NOW!</button> </a>`,
+      });
 
       res.json({
         _id: newUser._id,
@@ -196,6 +199,7 @@ console.log("THIS IS BASE",base64);
 
       if (user.loginAttempts >= 2) {
         user.isBlocked = true;
+        user.blockReleaseTime = new Date(Date.now() + 24 * 60 * 60 * 1000);
         await user.save();
       }
 
@@ -208,13 +212,8 @@ console.log("THIS IS BASE",base64);
 
       user.loginAttempts = 0;
       await user.save();
-// console.log(user._id);
-      // const param = { email: value.email };
-      // const token = jwt.sign(param, config.jwt_token, { expiresIn: "72800s" });
-//       const user_id = req.user
-// req.user = user
-// console.log(req.token);
-const token = signToken(user._id);
+
+      const token = signToken(user._id);
 
       res.json({
         token: token,
@@ -224,7 +223,7 @@ const token = signToken(user._id);
         admin: user.admin,
         business: user.business,
         isBlocked: user.isBlocked,
-        favorites: user.favorites
+        favorites: user.favorites,
       });
     } catch (err) {
       const user = await User.findOne({ email: req.body.email });
@@ -261,6 +260,37 @@ const token = signToken(user._id);
     } catch (err) {
       console.log(err);
       res.status(400).json({ error: "error delete vacation" });
+    }
+  },
+  resetPassword: async function (req, res, next) {
+    const schema = joi.object({
+      email: joi.string(),
+    });
+
+    const { error, value } = schema.validate(req.body);
+
+    if (error) {
+      console.log(error.details[0].message);
+      res.status(400).json({ error: error.details[0].message });
+      return;
+    }
+    console.log(value);
+    try {
+      const user = await User.findOne({ email: value.email });
+
+      if (!user) {
+        throw "User does not exist.";
+      }
+
+      await sendEmail({
+        email: user.email,
+        subject: `Hello ${user.firstName}.`,
+        html: ` <h1>A request has been received to change the password for your BCard account.</h1> <a href="http://localhost:3001/reset/${user._id}"><button style="background-color:blue; border: none; color: white; height: 35px; cursor: pointer; ">Reset Password</button> </a> <br><p>If you did not initiate this requets, please contact us immediatley at support@bcard.com</p>`,
+      });
+      res.json({ message: "Password reset link sent to your email." });
+    } catch (err) {
+      console.log(err);
+      res.status(400).json({ error: "error getting users" });
     }
   },
 };

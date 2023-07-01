@@ -1,11 +1,10 @@
 import { Box, Button, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent, TextField } from "@mui/material";
-import React, { FormEvent, useContext, useEffect, useState } from "react";
+import React, { FormEvent, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Title from "../components/Title";
 import { addCard } from "../api/apiServices";
 import { useTextInput } from "../hooks/useTextInput";
 import { toast } from "react-toastify";
-import { AppContext } from "../App";
 import { countryCoordinates } from "../interfaces/IUserType";
 import { getUser } from "../auth/TokenManager";
 
@@ -20,7 +19,6 @@ const AddCard = () => {
   const imageUrlProp = useTextInput("");
   const imageAltProp = useTextInput("");
   const stateProp = useTextInput("");
-  // const countryProp = useTextInput("");
    const [country, setCountry] = useState("");
   const cityProp = useTextInput("");
   const streetProp = useTextInput("");
@@ -28,16 +26,9 @@ const AddCard = () => {
   const zipProp = useTextInput("");
   const [lat, setLat] = useState(0);
   const [lng, setLng] = useState(0);
-   const context = useContext(AppContext);
 
      const myUser = getUser()
      
-     useEffect(() => {
-    if(context){
-      context.setUser(context?.user)
-      
-    }
-  }, []);
 
   function validate(): boolean {
     if (!titleProp.value || titleProp.value.length < 2) {

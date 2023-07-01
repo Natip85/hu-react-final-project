@@ -1,18 +1,14 @@
 import React from "react";
 import Title from "../components/Title";
 import { motion } from "framer-motion";
-import { SelectedPage } from "../interfaces/ICardType";
+
 import { useForm } from "react-hook-form";
 import useMediaQuery from "../hooks/useMediaQuery";
 import { Button, Divider } from "@mui/material";
 
 const test = require("../assets/contactUsPageGraphic.webp");
 
-type Props = {
-  setSelectedPage: (value: SelectedPage) => void;
-};
-
-const About = ({ setSelectedPage }: Props) => {
+const About = () => {
   const isAboveMediumScreens = useMediaQuery("(min-width: 1060px)");
 
   const {
@@ -29,13 +25,9 @@ const About = ({ setSelectedPage }: Props) => {
   };
 
   return (
-    <div style={{ height: "100vh"}}>
-      <section
-        id="contactus"
-        style={{paddingBottom: 200}}
-      >
-      
-        <motion.div onViewportEnter={() => setSelectedPage(SelectedPage.About)}>
+    <div style={{ height: "100vh" }}>
+      <section id="contactus" style={{ paddingBottom: 200 }}>
+        <motion.div>
           {/* HEADER */}
           <motion.div
             style={{ width: "100%", margin: "auto" }}
@@ -75,7 +67,7 @@ const About = ({ setSelectedPage }: Props) => {
                 members.
               </p>
             </motion.div>
-  <Divider sx={{marginTop: 5}}/>
+            <Divider sx={{ marginTop: 5 }} />
             <div>
               <Title mainText="Why Choose BCard?" />
               <p style={{ width: "55%", margin: "auto", marginTop: 50 }}>
@@ -115,7 +107,7 @@ const About = ({ setSelectedPage }: Props) => {
               </p>
             </div>
           </motion.div>
-  <Divider sx={{marginTop: 5}}/>
+          <Divider sx={{ marginTop: 5 }} />
           {/* FORM AND IMAGE */}
           {isAboveMediumScreens ? (
             <div
@@ -127,7 +119,7 @@ const About = ({ setSelectedPage }: Props) => {
               }}
             >
               <motion.div
-                style={{ width: "70%", }}
+                style={{ width: "70%" }}
                 initial="hidden"
                 whileInView="visible"
                 viewport={{ once: true, amount: 0.5 }}
@@ -137,17 +129,25 @@ const About = ({ setSelectedPage }: Props) => {
                   visible: { opacity: 1, y: 0 },
                 }}
               >
-                 <Title mainText="Join Our Community Today!" />
+                <Title mainText="Join Our Community Today!" />
 
-            <p style={{ width: "75%", margin: "auto", marginBottom: 50, marginTop: 50 }}>
-              We invite you to become part of our growing community of
-              passionate entrepreneurs. Whether you're a small startup, a local
-              brick-and-mortar store, or a service-based business, BCard offers you the platform to share your story, showcase your
-              products or services, and connect with a wider audience. Together,
-              let's make your business thrive. Feel free to customize the
-              content according to your specific brand voice, values, and unique
-              selling points.
-            </p>
+                <p
+                  style={{
+                    width: "75%",
+                    margin: "auto",
+                    marginBottom: 50,
+                    marginTop: 50,
+                  }}
+                >
+                  We invite you to become part of our growing community of
+                  passionate entrepreneurs. Whether you're a small startup, a
+                  local brick-and-mortar store, or a service-based business,
+                  BCard offers you the platform to share your story, showcase
+                  your products or services, and connect with a wider audience.
+                  Together, let's make your business thrive. Feel free to
+                  customize the content according to your specific brand voice,
+                  values, and unique selling points.
+                </p>
                 <form
                   target="_blank"
                   onSubmit={onSubmit}
@@ -157,7 +157,7 @@ const About = ({ setSelectedPage }: Props) => {
                     display: "flex",
                     flexDirection: "column",
                     width: "90%",
-                    margin: 'auto'
+                    margin: "auto",
                   }}
                 >
                   <input
@@ -236,7 +236,7 @@ const About = ({ setSelectedPage }: Props) => {
               </motion.div>
 
               <motion.div
-              style={{display: 'flex', alignItems: 'end'}}
+                style={{ display: "flex", alignItems: "end" }}
                 initial="hidden"
                 whileInView="visible"
                 viewport={{ once: true, amount: 0.5 }}
@@ -246,7 +246,7 @@ const About = ({ setSelectedPage }: Props) => {
                   visible: { opacity: 1, y: 0 },
                 }}
               >
-                <div >
+                <div>
                   <img alt="contact-us-page-graphic" src={test} />
                 </div>
               </motion.div>
@@ -263,7 +263,7 @@ const About = ({ setSelectedPage }: Props) => {
               }}
             >
               <motion.div
-                style={{ padding: 20, width: "80%", marginBottom: 50, }}
+                style={{ padding: 20, width: "80%", marginBottom: 50 }}
                 initial="hidden"
                 whileInView="visible"
                 viewport={{ once: true, amount: 0.5 }}
@@ -273,18 +273,25 @@ const About = ({ setSelectedPage }: Props) => {
                   visible: { opacity: 1, y: 0 },
                 }}
               >
-                 <Title mainText="Join Our Community Today!" />
+                <Title mainText="Join Our Community Today!" />
 
-            <p style={{ width: "75%", margin: "auto", marginBottom: 50, marginTop: 20 }}>
-              We invite you to become part of our growing community of
-              passionate entrepreneurs. Whether you're a small startup, a local
-              brick-and-mortar store, or a service-based business, [Your Website
-              Name] offers you the platform to share your story, showcase your
-              products or services, and connect with a wider audience. Together,
-              let's make your business thrive. Feel free to customize the
-              content according to your specific brand voice, values, and unique
-              selling points.
-            </p>
+                <p
+                  style={{
+                    width: "75%",
+                    margin: "auto",
+                    marginBottom: 50,
+                    marginTop: 20,
+                  }}
+                >
+                  We invite you to become part of our growing community of
+                  passionate entrepreneurs. Whether you're a small startup, a
+                  local brick-and-mortar store, or a service-based business,
+                  [Your Website Name] offers you the platform to share your
+                  story, showcase your products or services, and connect with a
+                  wider audience. Together, let's make your business thrive.
+                  Feel free to customize the content according to your specific
+                  brand voice, values, and unique selling points.
+                </p>
                 <form
                   target="_blank"
                   onSubmit={onSubmit}

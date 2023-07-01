@@ -66,6 +66,17 @@ export async function deleteUser(_id: string): Promise<User> {
   return res.json();
 }
 
+export async function passwordChange(user: User):Promise<User> {
+  const res = await fetch(`${usersUrl}resetPassword`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(user),
+  })
+  return res.json();
+}
+
 
 
 
@@ -127,7 +138,7 @@ export async function deleteCard(_id: string): Promise<Card> {
   return res.json();
 }
 
-export async function getFavorites(): Promise<Array<Card>> {
+export async function getFavorites(): Promise<any> {
   const res = await fetch(`${cardsUrl}favs`, {
     headers: {
       'x-auth-token': getToken()

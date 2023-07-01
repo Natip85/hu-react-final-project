@@ -42,9 +42,9 @@ const userSchema = new mongoose.Schema(
       minlength: [8, "Min 8 characters required."],
       maxlength: [200, "Max 200 characters allowed."],
     },
-    image:{
-      type: String
-    },
+    // image:{
+    //   type: String
+    // },
     imageUrl: {
       type: String,
     },
@@ -91,7 +91,15 @@ const userSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
-    favorites: [{type: mongoose.Schema.Types.ObjectId, ref: 'Card'}]
+    blockReleaseTime: { 
+      type: Date, 
+      default: null 
+    },
+    favorites: [{type: mongoose.Schema.Types.ObjectId, ref: 'Card'}],
+    // profileImage: { 
+    //   type: String, 
+    //   required: true 
+    // },
   },
   { timestamps: true }
 );

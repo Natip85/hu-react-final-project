@@ -29,9 +29,3 @@ export interface Card {
    favorites?: [] | null;
    onToggleFavorite?: Function
 }
-
-
-export enum SelectedPage {
-  About = "about",
-  
-}

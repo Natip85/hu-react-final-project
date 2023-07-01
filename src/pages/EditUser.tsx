@@ -4,7 +4,6 @@ import { Box, Button, FormControl, InputLabel, MenuItem, Select, Switch, TextFie
 import { countryCoordinates } from "../interfaces/IUserType";
 import { useNavigate, useParams } from 'react-router-dom';
 import { editUser, getUserById } from '../api/apiServices';
-import { getUser } from '../auth/TokenManager';
 import { toast } from 'react-toastify';
 
 
@@ -25,7 +24,6 @@ const EditUser = () => {
   const [zip, setZip] = useState("");
   const [business, setBusiness] = useState(false);
   const label = { inputProps: { "aria-label": "Switch demo" } };
- const myUser = getUser()
  
   useEffect(()=>{
     if (!id) return;
@@ -49,7 +47,7 @@ const EditUser = () => {
       setBusiness(bzz);
     })
     
-  }, [])
+  }, [id])
 
   function handleSubmit(){
  if (!id) return;

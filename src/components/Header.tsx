@@ -6,7 +6,7 @@ import "./header.css";
 import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
 import SearchIcon from "@mui/icons-material/Search";
-import { getUser, verifyToken } from "../auth/TokenManager";
+import { verifyToken } from "../auth/TokenManager";
 import Logout from "../auth/Logout";
 import UserAreaDropdown from "./UserAreaDropdown";
 import { alpha, styled } from "@mui/material/styles";
@@ -19,8 +19,6 @@ import { Link, Box, Tab } from "@mui/material";
 interface headerProps {
   isTopOfPage: boolean;
 }
-
-const user = getUser();
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -60,12 +58,12 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-// function getFirstInitial() {
-//   const userName = user;
-//   const cleanName =
-//     userName.firstName?.charAt(0).toUpperCase() + userName.firstName.slice(1);
-//   return cleanName;
-// }
+function getFirstInitial(fname: any) {
+  const userName = fname;
+  const cleanName =
+    userName.charAt(0).toUpperCase() + userName.slice(1);
+  return cleanName;
+}
 
 const Header = ({ isTopOfPage }: headerProps) => {
   const [isMenuToggled, setIsMenuToggled] = useState<boolean>(false);
@@ -125,7 +123,7 @@ const Header = ({ isTopOfPage }: headerProps) => {
                 </Search>
                 {verifyToken() && (
                   <>
-                    {context?.userName && <div>Hi, {context.userName}</div>}
+                    {context?.userName && <div>Hi, {getFirstInitial(context.userName)}</div>}
 
                     <UserAreaDropdown />
                   </>
@@ -208,6 +206,7 @@ const Header = ({ isTopOfPage }: headerProps) => {
             </div>
             {/* ~MENU ITEMS*/}
             <div className="menuItems">
+              <NavLink to="/">HOME</NavLink>
               <NavLink to="/about">ABOUT</NavLink>
               {context?.business && <NavLink to="/mycards">MY CARDS</NavLink>}
               {verifyToken() && (

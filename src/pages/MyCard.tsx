@@ -10,6 +10,7 @@ import { Button, Stack } from "@mui/material";
 import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 import { getUser } from "../auth/TokenManager";
 import { SearchContext } from "../hooks/SearchContext";
+import SkeletonCard from "../components/SkeletonCard";
 
 export interface CardContentType {
   onDelete: Function;
@@ -22,17 +23,25 @@ const MyCard = () => {
   const navigate = useNavigate();
   const [cards, setCards] = useState<Array<Card>>([]);
   const [filteredData, setFilteredData] = useState<Array<Card>>([]);
-   const { searchValue } = useContext(SearchContext);
-  const myUser = getUser()
+  const { searchValue } = useContext(SearchContext);
+  const myUser = getUser();
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 1200);
+    return () => clearTimeout(timer);
+  }, []);
   
   useEffect(() => {
     getCardsById(myUser._id).then((json) => {
       setCards(json);
-       setFilteredData(json)
+      setFilteredData(json);
     });
   }, [myUser._id]);
 
-    useEffect(() => {
+  useEffect(() => {
     const filtered = cards.filter(
       (item) =>
         item.title?.toLowerCase().includes(searchValue.toLowerCase()) ||
@@ -42,13 +51,13 @@ const MyCard = () => {
   }, [searchValue, cards]);
 
   async function onDelete(_id: string) {
-     if (window.confirm(`Are you sure to delete ${_id}?`)) {
-    await deleteCard(_id);
-    const updated = [...cards].filter((card) => card._id !== _id);
-    setCards(updated);
+    if (window.confirm(`Are you sure to delete ${_id}?`)) {
+      await deleteCard(_id);
+      const updated = [...cards].filter((card) => card._id !== _id);
+      setCards(updated);
 
-    toast.success("Card has been deleted.");
-     }
+      toast.success("Card has been deleted.");
+    }
   }
 
   function onEdit(_id: string) {
@@ -58,35 +67,41 @@ const MyCard = () => {
   return (
     <>
       <Title mainText="My cards" />
-      <div style={{paddingBottom: 300}}>
-         {!filteredData ||
-        (filteredData.length === 0 && (
-          <div style={{ textAlign: "center" }}>No cards to display</div>
-        ))}
-      <div className="cardsWrap">
-        <CardContext.Provider value={{ onDelete, onEdit }}>
-          {filteredData.map((card) => (
-            <MyBusinessCard key={card._id} {...card} cardId={card._id}/>
+      <div style={{ paddingBottom: 300 }}>
+        {!filteredData ||
+          (filteredData.length === 0 && (
+            <div style={{ textAlign: "center" }}>No cards to display</div>
           ))}
-        </CardContext.Provider>
-      </div>
+        <div className="cardsWrap">
+          <CardContext.Provider value={{ onDelete, onEdit }}>
+            {filteredData.map((card) => (
+              <div key={card._id}>
+                {loading ? (
+                  <SkeletonCard />
+                ) : (
+                  <MyBusinessCard key={card._id} {...card} cardId={card._id} />
+                )}
+              </div>
+            ))}
+          </CardContext.Provider>
+        </div>
 
-      <div style={{ position: "absolute", bottom: "12%", right: "5%", }}>
-        <Stack direction="row" spacing={2}>
-          <Link to="/addcards">
-            <Button
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-              variant="contained"
-            >
-              <AddOutlinedIcon />
-            </Button>
-          </Link>
-        </Stack>
-      </div>
+        <div style={{ position: "absolute", bottom: "12%", right: "5%" }}>
+          <Stack direction="row" spacing={2}>
+            <Link to="/addcards">
+              <Button
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+                variant="contained"
+              >
+                <AddOutlinedIcon />
+              </Button>
+            </Link>
+          </Stack>
+        </div>
       </div>
     </>
   );

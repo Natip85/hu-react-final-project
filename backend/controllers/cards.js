@@ -165,7 +165,6 @@ module.exports = {
   },
   getUserFavoriteCards: async function (req, res, next) {
     try {
-      // console.log(req.user);
       const user = await User.findById(req.user._id).populate('favorites');
       if (!user) {
         return res.status(404).json({ message: "User not found" });
@@ -187,7 +186,6 @@ module.exports = {
     const cardId = req.params.id;
     const userId = req.user._id;
     let status = false;
-// console.log(req.user.id);
     try {
       const card = await Card.findById(cardId);
       const user = await User.findById(userId);

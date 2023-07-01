@@ -1,14 +1,21 @@
-import { useParams } from "react-router-dom";
-import { editUser, getUserById } from "../api/apiServices";
+import { editUser, getUserById, passwordChange } from "../api/apiServices";
 import { useEffect, useState } from "react";
 import Title from "../components/Title";
-import {Box,Button,FormControl,InputLabel,MenuItem,Select,Switch,TextField,} from "@mui/material";
+import {
+  Box,
+  Button,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  Switch,
+  TextField,
+} from "@mui/material";
 import { countryCoordinates } from "../interfaces/IUserType";
 import { toast } from "react-toastify";
 import { getUser } from "../auth/TokenManager";
 
 const Profile = () => {
-  // const { id } = useParams();
   const [firstName, setFirstName] = useState("");
   const [middleName, setMiddleName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -22,15 +29,14 @@ const Profile = () => {
   const [houseNumber, setHouseNumber] = useState("");
   const [zip, setZip] = useState("");
   const [business, setBusiness] = useState(false);
+  const [passChange, setPassChange] = useState("");
   const label = { inputProps: { "aria-label": "Switch demo" } };
+  const myUser = getUser();
 
-  const myUser = getUser()
-  
   useEffect(() => {
-  //   // if (!id) return;
     getUserById(myUser._id).then((json) => {
-      var cleanBusiness = JSON.stringify(json[0].business).replace(/['"]+/g, "");
-      const bzz = JSON.parse(cleanBusiness)
+      var cleanBusiness = JSON.stringify(json[0].business).replace(/['"]+/g,"");
+      const bzz = JSON.parse(cleanBusiness);
 
       setFirstName(json[0].firstName as string);
       setMiddleName(json[0].middleName as string);
@@ -106,220 +112,298 @@ const Profile = () => {
     });
   }
 
+  function passValidate(){
+
+    const emailRe =/[a-z0-9\._%+!$&*=^|~#%'`?{}/\-]+@([a-z0-9\-]+\.){1,}([a-z]{2,16})/; //eslint-disable-line
+    if (!emailRe.test(passChange)) {
+      toast.error("A valid email address is required.");
+      return false;
+    }
+    return true
+  }
+  function handlePassChange() {
+    if(!passValidate()) return
+    passwordChange({
+      email: passChange,
+    }).then((json) => {
+      toast.success(json.message);
+      if (json.error) {
+        toast.error(json.error);
+      }
+    });
+  }
+
   return (
-    <div style={{ height: "100vh" }}>
-      <Title mainText="MY DETAILS" />
-      <form onSubmit={handleSubmit} className="formWrap">
+    <>
+      <div style={{ height: "100vh", display: "flex" }}>
         <div
           style={{
-            width: "100%",
             display: "flex",
-            justifyContent: "space-between",
-            marginBottom: 20,
+            flex: 1,
+            borderRight: "1px solid lightgrey",
           }}
         >
-          <TextField
-            required
-            style={{ width: "50%", marginRight: 5 }}
-            id="outlined-basic"
-            label="First name"
-            variant="outlined"
-            value={firstName}
-            onChange={(e) => setFirstName(e.target.value)}
-            // {...firstNameProp}
-          />
-          <TextField
-            style={{ width: "50%" }}
-            id="outlined-basic"
-            label="Middle name"
-            variant="outlined"
-            value={middleName}
-            onChange={(e) => setMiddleName(e.target.value)}
-            // {...middleNameProp}
-          />
+          <div
+            style={{ width: "80%", textAlign: "center", margin: " 50px auto" }}
+          >
+            <img
+              style={{
+                width: "300px",
+                height: "300px",
+                borderRadius: "50%",
+                position: "relative",
+                cursor: "pointer",
+              }}
+              src={"https://cdn-icons-png.flaticon.com/512/610/610120.png"}
+              alt=""
+            />
+
+            <h3>{myUser.firstName}</h3>
+            <p style={{ color: "grey" }}>{myUser.email}</p>
+          </div>
+        </div>
+
+        <div style={{ flex: 2 }}>
+          <Title mainText="PROFILE DETAILS" />
+          <form
+            onSubmit={handleSubmit}
+            style={{ width: "90%", margin: "auto" }}
+          >
+            <div
+              style={{
+                width: "100%",
+                display: "flex",
+                justifyContent: "space-between",
+                marginBottom: 20,
+              }}
+            >
+              <TextField
+                required
+                style={{ width: "50%", marginRight: 5 }}
+                id="outlined-basic"
+                label="First name"
+                variant="outlined"
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
+              />
+              <TextField
+                style={{ width: "50%" }}
+                id="outlined-basic"
+                label="Middle name"
+                variant="outlined"
+                value={middleName}
+                onChange={(e) => setMiddleName(e.target.value)}
+              />
+            </div>
+
+            <div
+              style={{
+                width: "100%",
+                display: "flex",
+                justifyContent: "space-between",
+                marginBottom: 20,
+              }}
+            >
+              <TextField
+                required
+                style={{ width: "50%", marginRight: 5 }}
+                id="outlined-basic"
+                label="Last name"
+                variant="outlined"
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
+              />
+              <TextField
+                required
+                style={{ width: "50%" }}
+                id="outlined-basic"
+                label="Phone"
+                variant="outlined"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+              />
+            </div>
+
+            <div
+              style={{
+                width: "100%",
+                display: "flex",
+                justifyContent: "space-between",
+                marginBottom: 20,
+              }}
+            ></div>
+
+            <div
+              style={{
+                width: "100%",
+                display: "flex",
+                justifyContent: "space-between",
+                marginBottom: 20,
+              }}
+            >
+              <TextField
+                style={{ width: "50%", marginRight: 5 }}
+                id="outlined-basic"
+                label="imageUrl"
+                variant="outlined"
+                value={imageUrl}
+                onChange={(e) => setImageUrl(e.target.value)}
+              />
+              <TextField
+                style={{ width: "50%" }}
+                id="outlined-basic"
+                label="imageAlt"
+                variant="outlined"
+                value={imageAlt}
+                onChange={(e) => setImageAlt(e.target.value)}
+              />
+            </div>
+
+            <div
+              style={{
+                width: "100%",
+                display: "flex",
+                justifyContent: "space-between",
+                marginBottom: 20,
+              }}
+            >
+              <Box sx={{ width: "50%" }}>
+                <FormControl fullWidth>
+                  <InputLabel id="demo-simple-select-label">Country</InputLabel>
+                  <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    label="Country"
+                    value={country}
+                    onChange={(e) => setCountry(e.target.value)}
+                  >
+                    {countryCoordinates.map((country, index) => (
+                      <MenuItem key={index} value={country.name}>
+                        {country.name}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              </Box>
+
+              <TextField
+                required
+                style={{ width: "50%", marginRight: 5 }}
+                id="outlined-basic"
+                label="State"
+                variant="outlined"
+                value={state}
+                onChange={(e) => setState(e.target.value)}
+              />
+            </div>
+
+            <div
+              style={{
+                width: "100%",
+                display: "flex",
+                justifyContent: "space-between",
+                marginBottom: 20,
+              }}
+            >
+              <TextField
+                required
+                style={{ width: "50%", marginRight: 5 }}
+                id="outlined-basic"
+                label="City"
+                variant="outlined"
+                value={city}
+                onChange={(e) => setCity(e.target.value)}
+              />
+              <TextField
+                required
+                style={{ width: "50%" }}
+                id="outlined-basic"
+                label="Street"
+                variant="outlined"
+                value={street}
+                onChange={(e) => setStreet(e.target.value)}
+              />
+            </div>
+
+            <div
+              style={{
+                width: "100%",
+                display: "flex",
+                justifyContent: "space-between",
+                marginBottom: 20,
+              }}
+            >
+              <TextField
+                required
+                style={{ width: "50%", marginRight: 5 }}
+                id="outlined-basic"
+                label="House number"
+                variant="outlined"
+                value={houseNumber}
+                onChange={(e) => setHouseNumber(e.target.value)}
+              />
+              <TextField
+                style={{ width: "50%" }}
+                id="outlined-basic"
+                label="Zip"
+                variant="outlined"
+                value={zip}
+                onChange={(e) => setZip(e.target.value)}
+              />
+            </div>
+            <div style={{ width: "100%" }}>
+              <Switch
+                {...label}
+                checked={business}
+                onChange={() => setBusiness(!business)}
+              />
+              <label>Signup as a bussiness</label>
+            </div>
+            <Button
+              onClick={handleSubmit}
+              style={{ width: "100%", marginTop: 100 }}
+              variant="contained"
+            >
+              Update
+            </Button>
+          </form>
         </div>
 
         <div
           style={{
-            width: "100%",
+            flex: 1,
+            borderLeft: "1px solid lightgrey",
             display: "flex",
-            justifyContent: "space-between",
-            marginBottom: 20,
+            justifyContent: "center",
           }}
         >
-          <TextField
-            required
-            style={{ width: "50%", marginRight: 5 }}
-            id="outlined-basic"
-            label="Last name"
-            variant="outlined"
-            value={lastName}
-            onChange={(e) => setLastName(e.target.value)}
-            // {...lastNameProp}
-          />
-          <TextField
-            required
-            style={{ width: "50%" }}
-            id="outlined-basic"
-            label="Phone"
-            variant="outlined"
-            value={phone}
-            onChange={(e) => setPhone(e.target.value)}
-            // {...phoneProp}
-          />
-        </div>
+          <div style={{ width: "90%", margin: "100px auto" }}>
+            <h1 style={{ textAlign: "center" }}>Reset password</h1>
+            <p style={{ textAlign: "center", marginBottom: 50 }}>
+              Enter the email address associated with your account and we'll
+              send you a link to reset your password.
+            </p>
 
-        <div
-          style={{
-            width: "100%",
-            display: "flex",
-            justifyContent: "space-between",
-            marginBottom: 20,
-          }}
-        ></div>
-
-        <div
-          style={{
-            width: "100%",
-            display: "flex",
-            justifyContent: "space-between",
-            marginBottom: 20,
-          }}
-        >
-          <TextField
-            style={{ width: "50%", marginRight: 5 }}
-            id="outlined-basic"
-            label="imageUrl"
-            variant="outlined"
-            value={imageUrl}
-            onChange={(e) => setImageUrl(e.target.value)}
-            // {...imageUrlProp}
-          />
-          <TextField
-            style={{ width: "50%" }}
-            id="outlined-basic"
-            label="imageAlt"
-            variant="outlined"
-            value={imageAlt}
-            onChange={(e) => setImageAlt(e.target.value)}
-            // {...imageAltProp}
-          />
+            <TextField
+              required
+              style={{ width: "100%" }}
+              label="Email"
+              variant="outlined"
+              value={passChange}
+              onChange={(e) => setPassChange(e.target.value)}
+            />
+            <Button
+              onClick={handlePassChange}
+              type="submit"
+              style={{ width: "100%", marginTop: 20 }}
+              variant="contained"
+            >
+              Send link
+            </Button>
+          </div>
         </div>
-
-        <div
-          style={{
-            width: "100%",
-            display: "flex",
-            justifyContent: "space-between",
-            marginBottom: 20,
-          }}
-        >
-          <Box sx={{ width: "50%" }}>
-            <FormControl fullWidth>
-              <InputLabel id="demo-simple-select-label">Country</InputLabel>
-              <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                label="Country"
-                value={country}
-                onChange={(e) => setCountry(e.target.value)}
-              >
-                {countryCoordinates.map((country, index) => (
-                  <MenuItem key={index} value={country.name}>
-                    {country.name}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          </Box>
-
-          <TextField
-            required
-            style={{ width: "50%", marginRight: 5 }}
-            id="outlined-basic"
-            label="State"
-            variant="outlined"
-            value={state}
-            onChange={(e) => setState(e.target.value)}
-            // {...stateProp}
-          />
-        </div>
-
-        <div
-          style={{
-            width: "100%",
-            display: "flex",
-            justifyContent: "space-between",
-            marginBottom: 20,
-          }}
-        >
-          <TextField
-            required
-            style={{ width: "50%", marginRight: 5 }}
-            id="outlined-basic"
-            label="City"
-            variant="outlined"
-            value={city}
-            onChange={(e) => setCity(e.target.value)}
-            // {...cityProp}
-          />
-          <TextField
-            required
-            style={{ width: "50%" }}
-            id="outlined-basic"
-            label="Street"
-            variant="outlined"
-            value={street}
-            onChange={(e) => setStreet(e.target.value)}
-            // {...streetProp}
-          />
-        </div>
-
-        <div
-          style={{
-            width: "100%",
-            display: "flex",
-            justifyContent: "space-between",
-            marginBottom: 20,
-          }}
-        >
-          <TextField
-            required
-            style={{ width: "50%", marginRight: 5 }}
-            id="outlined-basic"
-            label="House number"
-            variant="outlined"
-            value={houseNumber}
-            onChange={(e) => setHouseNumber(e.target.value)}
-            // {...houseNumberProp}
-          />
-          <TextField
-            style={{ width: "50%" }}
-            id="outlined-basic"
-            label="Zip"
-            variant="outlined"
-            value={zip}
-            onChange={(e) => setZip(e.target.value)}
-            // {...zipProp}
-          />
-        </div>
-        <div style={{ width: "100%" }}>
-          <Switch
-            {...label}
-            checked={business}
-            onChange={() => setBusiness(!business)}
-          />
-          <label>Signup as a bussiness</label>
-        </div>
-        <Button
-          onClick={handleSubmit}
-          style={{ width: "100%" }}
-          variant="contained"
-        >
-          Update
-        </Button>
-      </form>
-    </div>
+      </div>
+    </>
   );
 };
 

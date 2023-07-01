@@ -3,17 +3,16 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
-import { Button, CardActionArea, CardActions, Divider } from "@mui/material";
-import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
+import { Button, CardActionArea, CardActions, Divider, Link } from "@mui/material";
+import FavoriteIcon from "@mui/icons-material/Favorite";
 import CallSharpIcon from "@mui/icons-material/CallSharp";
-import { verifyToken } from "../auth/TokenManager";
-import { useContext } from "react";
+import { getUser, verifyToken } from "../auth/TokenManager";
+import { useContext, useEffect } from "react";
 import { AppContext } from "../App";
 import DeleteButton from "./DeleteButton";
 import EditButton from "./EditButton";
-// import { changeFav } from "../api/apiServices";
 import { useState } from "react";
-import { getFavorites, setFavorites } from "../api/apiServices";
+import { setFavorites } from "../api/apiServices";
 
 export interface CardProps {
   _id?: string;
@@ -33,6 +32,7 @@ export interface CardProps {
   zip?: string;
   timestamps?: string;
   cardId?: string;
+  favorites?: [] | null;
 }
 
 const MyBusinessCard = ({
@@ -53,27 +53,37 @@ const MyBusinessCard = ({
   zip,
   timestamps,
   cardId,
+  favorites,
 }: CardProps) => {
   const context = useContext(AppContext);
-  const [active, setActive] = useState(false);
+  const [isRedHeart, setIsRedHeart] = useState(false);
 
-  // async function handleFavClick() {
-  //   await changeFav(cardId as string);
-  //   setActive(!active);
-  // }
+  useEffect(() => {
+    const ifCardIsFavorite = (userId: string | null | undefined) => {
+      favorites?.forEach((id) => {
+        if (id === userId) {
+          setIsRedHeart(true);
+        }
+      });
+    };
+    const userObject = getUser();
+    if (userObject) {
+      ifCardIsFavorite(userObject._id);
+    }
+  }, [favorites]);
 
-   function callNumber(number: any) {
+  function callNumber(number: any) {
     window.location.href = `tel:${phone}`;
   }
 
-  
-   async function handleSetFavs(id: string){
-    await setFavorites(id).then((json)=>{
-      console.log(json);
-      
-    })
-
+  async function handleSetFavs(id: string) {
+    await setFavorites(id).then((json) => {});
   }
+
+  const toggleRed = () => {
+    setIsRedHeart(!isRedHeart);
+  };
+
   return (
     <div style={{ margin: 10, height: "400px" }}>
       <Card
@@ -86,6 +96,7 @@ const MyBusinessCard = ({
           padding: 1,
         }}
       >
+         <Link  style={{textDecoration: 'none'}} href={`/card-details/${cardId}`}>
         <CardActionArea>
           <CardMedia
             component="img"
@@ -105,8 +116,7 @@ const MyBusinessCard = ({
               <b>Phone:</b> {phone}
             </h4>
             <h4 style={{ marginBottom: 5 }}>
-              <b>Address:</b> {street}
-              {houseNumber}
+              <b>Address:</b> {houseNumber} {street},<br/>
               {city}
             </h4>
             <h4>
@@ -114,6 +124,7 @@ const MyBusinessCard = ({
             </h4>
           </CardContent>
         </CardActionArea>
+        </Link>
         <CardActions
           style={{
             display: "flex",
@@ -126,14 +137,20 @@ const MyBusinessCard = ({
           </Button>
           {verifyToken() && (
             <>
-              <Button onClick={()=>handleSetFavs(cardId as string)} size="small" color="primary">
-                <FavoriteBorderOutlinedIcon style={{ color: active ? "red" : "" }} />
+              <Button
+                onClick={() => {
+                  handleSetFavs(cardId as string);
+                  toggleRed();
+                }}
+                size="small"
+                color="primary"
+              >
+                <FavoriteIcon style={{ color: isRedHeart ? "red" : "" }} />
               </Button>
             </>
           )}
           {context?.business && (
             <>
-          
               <DeleteButton cardId={_id as string} />
 
               <EditButton cardId={_id as string} />

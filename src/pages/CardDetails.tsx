@@ -10,7 +10,14 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import { addEvent, deleteEvent, getEvents } from "../api/apiServices";
 import timeGridPlugin from "@fullcalendar/timegrid";
-import { Box, Button, Modal, TextField, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Divider,
+  Modal,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { toast } from "react-toastify";
 import useMediaQuery from "../hooks/useMediaQuery";
 import { GoogleMap, MarkerF, useJsApiLoader } from "@react-google-maps/api";
@@ -18,7 +25,7 @@ import { thepamsecretyek } from "../auth/TokenManager";
 
 const containerStyle = {
   width: "575px",
-  height: "575px",
+  height: "560px",
 };
 
 export interface EventTypes {
@@ -67,7 +74,7 @@ const CardDetails = () => {
       setLat(mynew);
       setLng(mynew2);
     });
-  }, []);
+  }, [id]);
 
   const [events, setEvents] = useState<Array<EventTypes>>([]);
   const [open, setOpen] = useState(false);
@@ -126,16 +133,22 @@ const CardDetails = () => {
         subText="We cant wait to hear from you!"
       />
       <div style={{ marginBottom: 20, marginLeft: 20 }}>
-        <Button onClick={() => navigate("/")} variant="outlined">
+        <Button
+          sx={{ width: 150 }}
+          onClick={() => navigate("/")}
+          variant="contained"
+        >
           Back
         </Button>
       </div>
+
+    
       <div
         style={{
           width: "85%",
           margin: "auto",
           padding: 20,
-          border: "10px solid black",
+          // border: "10px solid black",
           borderRadius: 10,
         }}
       >
@@ -144,16 +157,18 @@ const CardDetails = () => {
           style={{
             display: "flex",
             justifyContent: "space-between",
-            padding: 10,
+            // padding: 10,
           }}
         >
           <div
             style={{
               width: "40%",
+              minWidth: "400px",
               padding: 75,
               display: "flex",
               flexDirection: "column",
               justifyContent: "space-around",
+              border: "1px solid grey",
             }}
           >
             <h1>{card?.title}</h1>
@@ -178,12 +193,20 @@ const CardDetails = () => {
               </Link>
             </div>
           </div>
-          <div>
-            <img style={{ width: "100%" }}
-               src={card?.imageUrl ? card?.imageUrl:"https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"} alt="" />
-          </div>
+          {/* <div> */}
+          <img
+            style={{ width: "60%" }}
+            src={
+              card?.imageUrl
+                ? card?.imageUrl
+                : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
+            }
+            alt=""
+          />
+          {/* </div> */}
         </div>
       </div>
+      <Divider />
       {isAboveMediumScreens ? (
         <>
           <div
@@ -249,7 +272,7 @@ const CardDetails = () => {
                 </form>
               </Modal>
             </div>
-            <div style={{ minWidth: "650px", height: "550px", marginTop: 100 }}>
+            <div style={{ minWidth: "500px", height: "550px", marginTop: 85 }}>
               {isLoaded ? (
                 <GoogleMap
                   mapContainerStyle={containerStyle}
@@ -284,7 +307,7 @@ const CardDetails = () => {
               </h2>
               <div
                 style={{
-                  width: 650,
+                  width: 600,
                   border: "1px solid black",
                   padding: 20,
                   backgroundColor: "white",
@@ -333,7 +356,15 @@ const CardDetails = () => {
               </Modal>
             </div>
 
-            <div style={{ minWidth: "650px", height: "550px", marginTop: 100 }}>
+            <div
+              style={{
+                minWidth: "650px",
+                height: "550px",
+                marginTop: 100,
+                display: "flex",
+                justifyContent: "center",
+              }}
+            >
               {isLoaded ? (
                 <GoogleMap
                   mapContainerStyle={containerStyle}

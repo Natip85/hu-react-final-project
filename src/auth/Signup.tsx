@@ -60,12 +60,12 @@ const Signup = () => {
       return false;
     }
 
-    const emailRe =/[a-z0-9\._%+!$&*=^|~#%'`?{}/\-]+@([a-z0-9\-]+\.){1,}([a-z]{2,16})/;
+    const emailRe =/[a-z0-9\._%+!$&*=^|~#%'`?{}/\-]+@([a-z0-9\-]+\.){1,}([a-z]{2,16})/; //eslint-disable-line
     if (!emailRe.test(emailProp.value)) {
       toast.error("A valid email address is required.");
       return false;
     }
-    const passRegex =/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d.*\d.*\d.*\d)(?=.*[!@#$%^&*()_\-+=?]).{8,}$/;
+    const passRegex =/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d.*\d.*\d.*\d)(?=.*[!@#$%^&*()_\-+=?]).{8,}$/; //eslint-disable-line
     if (!passwordProp.value || !passRegex.test(passwordProp.value)) {
       toast.error(
         "Password must contain at least 8 characters, 1 uppercase letter, 1 lowercase letter, 4 numbers and 1 special character."
