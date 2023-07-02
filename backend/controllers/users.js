@@ -293,4 +293,34 @@ module.exports = {
       res.status(400).json({ error: "error getting users" });
     }
   },
+  actualResetPassword: async function (req, res, next) {
+    const schema = joi.object({
+      password: joi.string(),
+    });
+
+    const { error, value } = schema.validate(req.body);
+    if (error) {
+      console.log(error.details[0].message);
+      res.status(400).json({ error: error.details[0].message });
+      return;
+    }
+
+    try {
+      const hash = await bcrypt.hash(value.password, 10);
+
+      const user = await User.updateOne(
+        { _id: req.params.id },
+        { password: hash }
+      );
+
+      if (!user) return res.status(400).json({ error: "User doesn't exits." });
+
+      const updated = await User.findOne({ _id: req.params.id });
+
+      res.json(updated);
+    } catch (err) {
+      console.log(err.message);
+      res.status(400).json({ error: "error resetting password" + err.message });
+    }
+  },
 };

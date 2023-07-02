@@ -49,7 +49,7 @@ export async function editUser(_id: string, user: User): Promise<User> {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
-      // 'x-auth-token': getToken()
+      'x-auth-token': getToken()
     },
     body: JSON.stringify(user),
   });
@@ -76,6 +76,18 @@ export async function passwordChange(user: User):Promise<User> {
   })
   return res.json();
 }
+export async function actualResetPassword(_id: string, user: User):Promise<User> {
+  const res = await fetch(`${usersUrl}actualResetPassword/${_id}`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(user),
+  })
+  return res.json();
+}
+
+
 
 
 

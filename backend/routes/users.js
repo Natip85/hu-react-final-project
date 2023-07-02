@@ -9,6 +9,7 @@ router.get('/', users.allUsers);
 router.post('/signup', users.signup);
 router.post('/login', users.login);
 router.post('/resetPassword', users.resetPassword);
+router.patch('/actualResetPassword/:id', users.actualResetPassword);
 
 router.patch('/:id', users.edit);
 

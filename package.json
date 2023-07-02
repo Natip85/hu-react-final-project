@@ -19,6 +19,7 @@
     "@types/node": "^16.18.36",
     "@types/react": "^18.2.12",
     "@types/react-dom": "^18.2.5",
+    "email-validator": "^2.0.4",
     "framer-motion": "^10.12.16",
     "mui-file-input": "^2.0.0",
     "react": "^18.2.0",

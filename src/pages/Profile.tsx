@@ -167,7 +167,7 @@ const Profile = () => {
           <Title mainText="PROFILE DETAILS" />
           <form
             onSubmit={handleSubmit}
-            style={{ width: "90%", margin: "auto" }}
+            style={{ width: "90%", margin: "100px auto" }}
           >
             <div
               style={{

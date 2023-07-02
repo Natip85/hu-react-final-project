@@ -25,7 +25,7 @@ export interface User {
   lng?: number
   isBlocked?: boolean
   favorites?: [string] | null;
-  base64?: any
+  confirmPassword?: string
 }
 
 export const countryCoordinates = [
