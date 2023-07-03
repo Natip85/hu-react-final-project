@@ -147,7 +147,7 @@ const Home = () => {
                         <Link href={`/card-details/${row._id}`}>
                           <Button
                             size="small"
-                            variant="contained"
+                            variant="outlined"
                             color="primary"
                           >
                             Contact Us

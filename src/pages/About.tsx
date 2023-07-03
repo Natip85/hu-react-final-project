@@ -52,7 +52,7 @@ const About = () => {
             >
               <Title mainText="ABOUT US" />
 
-              <p style={{ width: "55%", margin: "auto", marginTop: 50 }}>
+              <p style={{ width: "55%", margin: "auto", marginTop: 50, fontSize: '1.2rem' }}>
                 At BCard, we believe in the power of small businesses and their
                 ability to shape communities and drive economic growth. Our
                 platform is designed to provide a space where entrepreneurs like
@@ -70,7 +70,7 @@ const About = () => {
             <Divider sx={{ marginTop: 5 }} />
             <div>
               <Title mainText="Why Choose BCard?" />
-              <p style={{ width: "55%", margin: "auto", marginTop: 50 }}>
+              <p style={{ width: "55%", margin: "auto", marginTop: 50, fontSize: '1.2rem' }}>
                 {" "}
                 <strong>Visibility:</strong> With our platform, you gain instant
                 visibility among a diverse community of users actively seeking
@@ -79,7 +79,7 @@ const About = () => {
               </p>
               <br />
               <br />
-              <p style={{ width: "55%", margin: "auto" }}>
+              <p style={{ width: "55%", margin: "auto", fontSize: '1.2rem' }}>
                 {" "}
                 <strong>Ease of Use:</strong> Our user-friendly interface makes
                 it simple to create and manage your business profile. You can
@@ -89,7 +89,7 @@ const About = () => {
               </p>
               <br />
               <br />
-              <p style={{ width: "55%", margin: "auto" }}>
+              <p style={{ width: "55%", margin: "auto", fontSize: '1.2rem' }}>
                 <strong>Networking Opportunities:</strong> Connect with other
                 business owners, industry professionals, and potential partners
                 through our networking features. Build valuable relationships,
@@ -98,7 +98,7 @@ const About = () => {
               </p>
               <br />
               <br />
-              <p style={{ width: "55%", margin: "auto" }}>
+              <p style={{ width: "55%", margin: "auto", fontSize: '1.2rem' }}>
                 <strong>Targeted Advertising:</strong> Tailor your advertising
                 campaigns to reach your ideal audience. Our platform allows you
                 to define specific demographics, interests, and geographical
@@ -137,6 +137,7 @@ const About = () => {
                     margin: "auto",
                     marginBottom: 50,
                     marginTop: 50,
+                    fontSize: '1.2rem'
                   }}
                 >
                   We invite you to become part of our growing community of

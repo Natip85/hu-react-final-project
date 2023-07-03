@@ -1,16 +1,13 @@
 import React, { useEffect, useState } from "react";
 import Title from "../components/Title";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { editCards, getCardById } from "../api/apiServices";
 import { Button, TextField } from "@mui/material";
-// import { Card } from "../interfaces/ICardType";
 import { toast } from "react-toastify";
-
 
 const EditCard = () => {
   const { id } = useParams();
-   const navigate = useNavigate();
-  // const [card, setCard] = useState<Card>();
+  const navigate = useNavigate();
   const [title, setTitle] = useState("");
   const [subtitle, setSubtitle] = useState("");
   const [description, setDescription] = useState("");
@@ -30,42 +27,24 @@ const EditCard = () => {
     if (!id) return;
 
     getCardById(id).then((json) => {
-
-      var cleanTitle= JSON.stringify(json.title).replace(/['"]+/g, '')
-      var cleanSubtitle= JSON.stringify(json.subtitle).replace(/['"]+/g, '')
-      var cleanDescription= JSON.stringify(json.description).replace(/['"]+/g, '')
-      var cleanPhone= JSON.stringify(json.phone).replace(/['"]+/g, '')
-      var cleanEmail= JSON.stringify(json.email).replace(/['"]+/g, '')
-      var cleanWeb= JSON.stringify(json.web).replace(/['"]+/g, '')
-      var cleanImageUrl= JSON.stringify(json.imageUrl).replace(/['"]+/g, '')
-      var cleanImageAlt= JSON.stringify(json.imageAlt).replace(/['"]+/g, '')
-      var cleanState= JSON.stringify(json.state).replace(/['"]+/g, '')
-      var cleanCountry= JSON.stringify(json.country).replace(/['"]+/g, '')
-      var cleanCity= JSON.stringify(json.city).replace(/['"]+/g, '')
-      var cleanStreet= JSON.stringify(json.street).replace(/['"]+/g, '')
-      var cleanHouseNumber= JSON.stringify(json.houseNumber).replace(/['"]+/g, '')
-      var cleanZip= JSON.stringify(json.zip).replace(/['"]+/g, '')
-      
-
-      // setCard(json);
-      setTitle(cleanTitle);
-      setSubtitle(cleanSubtitle);
-      setDescription(cleanDescription);
-      setPhone(cleanPhone);
-      setEmail(cleanEmail);
-      setWeb(cleanWeb);
-      setImageUrl(cleanImageUrl);
-      setImageAlt(cleanImageAlt);
-      setState(cleanState);
-      setCountry(cleanCountry);
-      setCity(cleanCity);
-      setStreet(cleanStreet);
-      setHouseNumber(cleanHouseNumber);
-      setZip(cleanZip);
+      setTitle(json.title as string);
+      setSubtitle(json.subtitle as string);
+      setDescription(json.description as string);
+      setPhone(json.phone as string);
+      setEmail(json.email as string);
+      setWeb(json.web as string);
+      setImageUrl(json.imageUrl as string);
+      setImageAlt(json.imageAlt as string);
+      setState(json.state as string);
+      setCountry(json.country as string);
+      setCity(json.city as string);
+      setStreet(json.street as string);
+      setHouseNumber(json.houseNumber as string);
+      setZip(json.zip as string);
     });
   }, [id]);
 
-   function validate(): boolean {
+  function validate(): boolean {
     if (!title || title.length < 2) {
       toast.error("Title is required.");
       return false;
@@ -84,15 +63,15 @@ const EditCard = () => {
     }
 
     // eslint-disable-next-line no-useless-escape
-    const emailRe =/[a-z0-9\._%+!$&*=^|~#%'`?{}/\-]+@([a-z0-9\-]+\.){1,}([a-z]{2,16})/;
+    const emailRe = /[a-z0-9\._%+!$&*=^|~#%'`?{}/\-]+@([a-z0-9\-]+\.){1,}([a-z]{2,16})/;
     if (!emailRe.test(email)) {
       toast.error("A valid email address is required.");
       return false;
     }
-    // if (!countryProp.value) {
-    //   toast.error("Please select a country.");
-    //   return false;
-    // }
+    if (!country) {
+      toast.error("Please select a country.");
+      return false;
+    }
     if (!city) {
       toast.error("Please select a city.");
       return false;
@@ -110,7 +89,7 @@ const EditCard = () => {
   }
 
   function handleSubmit() {
- if (!validate()) {
+    if (!validate()) {
       return;
     }
     if (!id) return;
@@ -132,19 +111,17 @@ const EditCard = () => {
       zip,
     }).then((json) => {
     
-              navigate(-1);
-          
-      toast.success('Card edited successfully.')
+
+      toast.success("Card edited successfully.");
+        navigate(-1);
     });
   }
 
-
-    
   return (
     <>
       <Title mainText="EDIT" />
 
-      <div style={{paddingBottom: 300}} className="formWrap">
+      <div style={{ paddingBottom: 300 }} className="formWrap">
         <div
           style={{
             width: "100%",
@@ -337,21 +314,27 @@ const EditCard = () => {
         </div>
         <div style={{ width: "100%", display: "flex" }}>
           <div style={{ width: "50%", marginRight: 3 }}>
-            {/* <Link to="/mycards"> */}
-              <Button  onClick={() => {
-              navigate(-1);
-            }} style={{ width: "100%" }} variant="contained">
-                Cancel
-              </Button>
-            {/* </Link> */}
+            <Button
+              onClick={() => {
+                navigate(-1);
+              }}
+              style={{ width: "100%" }}
+              variant="contained"
+            >
+              Cancel
+            </Button>
           </div>
           <div style={{ width: "50%", marginLeft: 3 }}>
-            <Button onClick={handleSubmit} style={{ width: "100%" }} variant="contained">
+            <Button
+              onClick={handleSubmit}
+              style={{ width: "100%" }}
+              variant="contained"
+            >
               Submit
             </Button>
           </div>
         </div>
-     </div>
+      </div>
     </>
   );
 };

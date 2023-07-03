@@ -9,7 +9,7 @@ import CallSharpIcon from "@mui/icons-material/CallSharp";
 import {  getUser, verifyToken } from "../auth/TokenManager";
 import {  useState } from "react";
 import {  setFavorites } from "../api/apiServices";
-
+import WhatsAppIcon from '@mui/icons-material/WhatsApp';
 
 export interface CardProps {
   _id?: string;
@@ -82,7 +82,12 @@ const BusinessCard = ({
     setIsRedHeart(!isRedHeart);
   };
 
-  
+   function sendWhatsApp(number: any) {
+    const num = number.replace(/^0|\D/g, '');
+    // window.location.href = `https://wa.me/972${num}`;
+    window.open(`https://wa.me/972${num}`,"_blank");
+  }
+
 
   return (
     <div style={{ margin: 10, height: "450px" }}>
@@ -152,7 +157,9 @@ const BusinessCard = ({
                 } size="small" color="primary">
                   <FavoriteIcon style={{ color: isRedHeart ? "red" : ""}} />
                 </Button>
-                
+                <Button onClick={()=>sendWhatsApp(phone)}>
+                <WhatsAppIcon  />
+                </Button>
               </>
             )}
           </div>
