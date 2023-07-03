@@ -115,11 +115,7 @@ function App() {
               <Route path="signup" element={<Signup />} />
               <Route path="login" element={<Login />} />
               <Route path="about" element={<About />} />
-              <Route path="reset/:id" element={
-               <RouteGuard>
-              <ResetPassword />
-              </RouteGuard>
-              } />
+              <Route path="reset/:id" element={<ResetPassword />} />
               <Route
                 path="card-details/:id"
                 element={

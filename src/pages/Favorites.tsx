@@ -36,6 +36,7 @@ const Favorites = () => {
     setFilteredData(filtered);
   }, [searchValue, favCards]);
 
+
   return (
     <>
       <Title mainText="My favorites" />

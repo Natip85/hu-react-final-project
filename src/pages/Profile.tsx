@@ -121,6 +121,7 @@ const Profile = () => {
     }
     return true
   }
+  
   function handlePassChange() {
     if(!passValidate()) return
     passwordChange({

@@ -21,6 +21,8 @@ export function getUser() {
 
 export function removeUser() {
   localStorage.removeItem("userData");
+  localStorage.removeItem(tokenKey);
+  window.location.reload()
 }
 
 export function setToken(tokenValue?: string) {

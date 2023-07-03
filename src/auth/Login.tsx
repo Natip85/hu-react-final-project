@@ -1,33 +1,59 @@
-import React, { FormEvent, useContext } from "react";
+import React, {
+  FormEvent,
+  useContext,
+  useState,
+} from "react";
 import Title from "../components/Title";
 import {
+  Box,
   Button,
   FormControl,
   IconButton,
   InputAdornment,
   InputLabel,
+  Modal,
   OutlinedInput,
   TextField,
+  Typography,
 } from "@mui/material";
 import { useTextInput } from "../hooks/useTextInput";
 import { Link, useNavigate } from "react-router-dom";
-import { login } from "../api/apiServices";
+import { login, passwordChange } from "../api/apiServices";
 import { toast } from "react-toastify";
 import { setToken, setUser } from "./TokenManager";
 import { AppContext } from "../App";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 
+const style = {
+  position: "absolute" as "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 500,
+  bgcolor: "background.paper",
+  border: "2px solid #000",
+  boxShadow: 24,
+  p: 4,
+};
+
 const Login = () => {
   const emailProp = useTextInput("");
   const passwordProp = useTextInput("");
+  const [resetPassField, setResetPassField] = useState('');
   const navigate = useNavigate();
   const context = useContext(AppContext);
   const [showPassword, setShowPassword] = React.useState(false);
+const [open, setOpen] = useState(false);
+ const handleOpen = (arg: any) => {
+    setOpen(true);
+  };
+const handleClose = () => setOpen(false);
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
   function validate(): boolean {
-    const emailRe =/[a-z0-9\._%+!$&*=^|~#%'`?{}/\-]+@([a-z0-9\-]+\.){1,}([a-z]{2,16})/; //eslint-disable-line
+    const emailRe =
+      /[a-z0-9\._%+!$&*=^|~#%'`?{}/\-]+@([a-z0-9\-]+\.){1,}([a-z]{2,16})/; //eslint-disable-line
     if (!emailRe.test(emailProp.value)) {
       toast.error("A valid email address is required.");
       return false;
@@ -75,6 +101,48 @@ const Login = () => {
   ) => {
     event.preventDefault();
   };
+
+  // const [isOpen, setIsOpen] = useState(false);
+  // const dropdownRef = useRef<any>(null);
+
+  // useEffect(() => {
+  //   const handleOutsideClick = (event: MouseEvent) => {
+  //     if (
+  //       dropdownRef.current &&
+  //       !dropdownRef.current.contains(event.target as Node)
+  //     ) {
+  //       setIsOpen(false);
+  //     }
+  //   };
+
+  //   document.addEventListener("mousedown", handleOutsideClick);
+  //   return () => {
+  //     document.removeEventListener("mousedown", handleOutsideClick);
+  //   };
+  // }, []);
+
+  function passValidate(){
+
+    const emailRe =/[a-z0-9\._%+!$&*=^|~#%'`?{}/\-]+@([a-z0-9\-]+\.){1,}([a-z]{2,16})/; //eslint-disable-line
+    if (!emailRe.test(resetPassField)) {
+      toast.error("A valid email address is required.");
+      return false;
+    }
+    return true
+  }
+  
+  function handleForgotPassSubmit() {
+    if(!passValidate()) return
+    passwordChange({
+      email: resetPassField,
+    }).then((json) => {
+      toast.success(json.message);
+      if (json.error) {
+        toast.error(json.error);
+      }
+    });
+  }
+
 
   return (
     <div style={{ height: "100vh" }}>
@@ -135,12 +203,51 @@ const Login = () => {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
+          marginBottom: 15
         }}
       >
         Dont have an account yet?{" "}
         <Link className="loginLink" to="/signup">
           Sign-up here
         </Link>
+      </div>
+      <div style={{ textAlign: "center" }}>
+        <Link onClick={handleOpen} className="loginLink" to="">
+          Forgot password?
+        </Link>
+        
+         <Modal
+                open={open}
+                onClose={handleClose}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+              >
+                <form onSubmit={handleForgotPassSubmit}>
+                  <Box sx={style}>
+                    <Typography
+                    sx={{textAlign: 'center'}}
+                      id="modal-modal-title"
+                      variant="h6"
+                      component="h2"
+                    >
+                      Forgot your password?<br/>
+                      <Typography>Please enter the email you use to sign in to BCard</Typography>
+                    </Typography>
+                    <TextField
+                    sx={{marginBottom: 3, marginTop: 3, width: '100%'}}
+                      value={resetPassField}
+                      onChange={(e)=>setResetPassField(e.target.value)}
+                      id="outlined-basic"
+                      label="Email"
+                      variant="outlined"
+                    />
+                    <Typography>We will send you an email with a link to reset your password.</Typography>
+                    <Box sx={{textAlign: 'center'}}>
+                    <Button variant="contained" type="submit">Send link</Button>
+                    </Box>
+                  </Box>
+                </form>
+              </Modal>
       </div>
     </div>
   );
