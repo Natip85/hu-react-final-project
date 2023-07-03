@@ -102,25 +102,6 @@ const handleClose = () => setOpen(false);
     event.preventDefault();
   };
 
-  // const [isOpen, setIsOpen] = useState(false);
-  // const dropdownRef = useRef<any>(null);
-
-  // useEffect(() => {
-  //   const handleOutsideClick = (event: MouseEvent) => {
-  //     if (
-  //       dropdownRef.current &&
-  //       !dropdownRef.current.contains(event.target as Node)
-  //     ) {
-  //       setIsOpen(false);
-  //     }
-  //   };
-
-  //   document.addEventListener("mousedown", handleOutsideClick);
-  //   return () => {
-  //     document.removeEventListener("mousedown", handleOutsideClick);
-  //   };
-  // }, []);
-
   function passValidate(){
 
     const emailRe =/[a-z0-9\._%+!$&*=^|~#%'`?{}/\-]+@([a-z0-9\-]+\.){1,}([a-z]{2,16})/; //eslint-disable-line
@@ -227,11 +208,11 @@ const handleClose = () => setOpen(false);
                     <Typography
                     sx={{textAlign: 'center'}}
                       id="modal-modal-title"
-                      variant="h6"
+                      variant="h4"
                       component="h2"
                     >
                       Forgot your password?<br/>
-                      <Typography>Please enter the email you use to sign in to BCard</Typography>
+                      <Typography sx={{marginTop: 3}}>Please enter the email you use to sign in to BCard</Typography>
                     </Typography>
                     <TextField
                     sx={{marginBottom: 3, marginTop: 3, width: '100%'}}
@@ -241,8 +222,10 @@ const handleClose = () => setOpen(false);
                       label="Email"
                       variant="outlined"
                     />
-                    <Typography>We will send you an email with a link to reset your password.</Typography>
                     <Box sx={{textAlign: 'center'}}>
+                    <small style={{margin: 'auto'}}>We will send you an email with a link to reset your password.</small>
+                    </Box>
+                    <Box sx={{textAlign: 'center', marginTop: 3}}>
                     <Button variant="contained" type="submit">Send link</Button>
                     </Box>
                   </Box>

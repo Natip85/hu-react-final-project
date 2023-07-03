@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import Title from '../components/Title'
 import { Box, Button, FormControl, InputLabel, MenuItem, Select, Switch, TextField } from '@mui/material'
 import { countryCoordinates } from "../interfaces/IUserType";
-import { useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { editUser, getUserById } from '../api/apiServices';
 import { toast } from 'react-toastify';
 
@@ -277,6 +277,15 @@ const EditUser = () => {
           />
           <label>Signup as a bussiness</label>
         </div>
+        <div style={{display: 'flex', width: '100%'}}>
+           <div style={{ width: "50%", marginRight: 3 }}>
+            <Link to="/sandbox">
+              <Button style={{ width: "100%" }} variant="contained">
+                Cancel
+              </Button>
+            </Link>
+          </div>
+           <div style={{ width: "50%", marginRight: 3 }}>
         <Button
           onClick={handleSubmit}
           style={{ width: "100%" }}
@@ -284,6 +293,8 @@ const EditUser = () => {
         >
           Update
         </Button>
+        </div>
+        </div>
       </form>
     </div>
   )

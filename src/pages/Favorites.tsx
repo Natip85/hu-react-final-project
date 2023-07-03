@@ -41,26 +41,16 @@ const Favorites = () => {
     <>
       <Title mainText="My favorites" />
       <div style={{ paddingBottom: 500 }}>
-        {/* <Grid sx={{ justifyContent: "center" }} container>
-          {!filteredData ||
-            (filteredData.length === 0 && (
-              <div>You have no favorites yet.</div>
-            ))}
-          {filteredData.map((card) => (
-            <div key={card._id}>
-              {loading ? (
-                <SkeletonCard />
-              ) : (
-                <BusinessCard key={card._id} {...card} cardId={card._id} />
-              )}
-            </div>
-          ))}
-        </Grid> */}
          <Container>
+           {!filteredData ||
+            (filteredData.length === 0 && (
+              <div style={{textAlign: 'center'}}>You have no favorites yet.</div>
+            ))}
               <Box>
                 <Grid container spacing={2}>
                   {filteredData.map((card) => (
                     <Grid item xs={11} sm={6} md={4} key={card._id}>
+                      
                       {loading ? (
                         <SkeletonCard />
                       ) : (

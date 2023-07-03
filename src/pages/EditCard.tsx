@@ -131,7 +131,9 @@ const EditCard = () => {
       houseNumber,
       zip,
     }).then((json) => {
-      navigate("/mycards");
+    
+              navigate(-1);
+          
       toast.success('Card edited successfully.')
     });
   }
@@ -335,11 +337,13 @@ const EditCard = () => {
         </div>
         <div style={{ width: "100%", display: "flex" }}>
           <div style={{ width: "50%", marginRight: 3 }}>
-            <Link to="/mycards">
-              <Button style={{ width: "100%" }} variant="contained">
+            {/* <Link to="/mycards"> */}
+              <Button  onClick={() => {
+              navigate(-1);
+            }} style={{ width: "100%" }} variant="contained">
                 Cancel
               </Button>
-            </Link>
+            {/* </Link> */}
           </div>
           <div style={{ width: "50%", marginLeft: 3 }}>
             <Button onClick={handleSubmit} style={{ width: "100%" }} variant="contained">

@@ -168,7 +168,7 @@ const Profile = () => {
           <Title mainText="PROFILE DETAILS" />
           <form
             onSubmit={handleSubmit}
-            style={{ width: "90%", margin: "100px auto" }}
+            style={{ width: "90%", margin: "50px auto" }}
           >
             <div
               style={{
@@ -362,7 +362,7 @@ const Profile = () => {
             </div>
             <Button
               onClick={handleSubmit}
-              style={{ width: "100%", marginTop: 100 }}
+              style={{ width: "100%", marginTop: 50 }}
               variant="contained"
             >
               Update
