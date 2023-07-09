@@ -3,6 +3,7 @@ import Logout from "../auth/Logout";
 import { Button } from "@mui/material";
 import { Link } from "react-router-dom";
 import { AppContext } from "../App";
+import { getUser } from "../auth/TokenManager";
 
 type Props = {};
 
@@ -10,7 +11,7 @@ const UserAreaDropdown = (props: Props) => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<any>(null);
    const context = useContext(AppContext);
-   
+   const myUser = getUser()
 
   useEffect(() => {
     const handleOutsideClick = (event: MouseEvent) => {
@@ -40,12 +41,13 @@ const UserAreaDropdown = (props: Props) => {
         onClick={toggleDropdown}
         style={{
           width: 40,
-          borderRadius: "35%",
+          height: 40,
+          borderRadius: "50%",
           position: "relative",
           cursor: "pointer",
         }}
-        src="https://cdn-icons-png.flaticon.com/512/610/610120.png"
-        alt=""
+        src={myUser.image ? require(`../../backend/uploads/${myUser.image}`) : "https://cdn-icons-png.flaticon.com/512/610/610120.png"}
+        alt="profile-pic"
       />
       {isOpen && (
         <div

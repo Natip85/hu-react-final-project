@@ -10,6 +10,7 @@ import {  getUser, verifyToken } from "../auth/TokenManager";
 import {  useState } from "react";
 import {  setFavorites } from "../api/apiServices";
 import WhatsAppIcon from '@mui/icons-material/WhatsApp';
+import { toast } from "react-toastify";
 
 export interface CardProps {
   _id?: string;
@@ -75,6 +76,9 @@ const BusinessCard = ({
 
   async function handleSetFavs(id: string){
     await setFavorites(id).then((json)=>{
+      json.status
+        ? toast.success(`${json.title} Card added to favorites!`)
+        : toast.info(`${json.title} Card removed from favorites!`);
     })
   }
 
@@ -100,6 +104,7 @@ const BusinessCard = ({
           flexDirection: "column",
           justifyContent: "space-between",
           padding: 1,
+          boxShadow: '2px 2px 10px 2px gray'
         }}
       >
         <Link  style={{textDecoration: 'none'}} href={`/card-details/${cardId}`}>

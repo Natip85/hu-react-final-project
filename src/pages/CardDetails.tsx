@@ -24,8 +24,8 @@ import { GoogleMap, MarkerF, useJsApiLoader } from "@react-google-maps/api";
 import { thepamsecretyek } from "../auth/TokenManager";
 
 const containerStyle = {
-  width: "575px",
-  height: "560px",
+  width: "90%",
+  height: "90%",
 };
 
 export interface EventTypes {
@@ -127,7 +127,7 @@ const CardDetails = () => {
   }
 
   return (
-    <div>
+    <div style={{width: '75%', margin: '50px auto'}}>
       <Title
         mainText="Business details"
         subText="We cant wait to hear from you!"
@@ -150,14 +150,16 @@ const CardDetails = () => {
           padding: 20,
           // border: "10px solid black",
           borderRadius: 10,
+          // backgroundColor: 'red'
         }}
       >
-        <div></div>
+        
         <div
           style={{
             display: "flex",
             justifyContent: "space-between",
             // padding: 10,
+            // backgroundColor: 'green'
           }}
         >
           <div
@@ -169,9 +171,11 @@ const CardDetails = () => {
               flexDirection: "column",
               justifyContent: "space-around",
               border: "1px solid grey",
+              // backgroundColor: 'orange'
             }}
           >
             <h1>{card?.title}</h1>
+            <h3>{card?.description}</h3>
             <div>
               <h3>
                 {card?.title} {card?.houseNumber}
@@ -195,7 +199,7 @@ const CardDetails = () => {
           </div>
           {/* <div> */}
           <img
-            style={{ width: "60%" }}
+            style={{ width: "50%" }}
             src={
               card?.imageUrl
                 ? card?.imageUrl
@@ -224,7 +228,8 @@ const CardDetails = () => {
               </h2>
               <div
                 style={{
-                  width: 650,
+                  width: '100%',
+                  minWidth: '520px',
                   border: "1px solid black",
                   padding: 20,
                   backgroundColor: "white",
@@ -272,7 +277,7 @@ const CardDetails = () => {
                 </form>
               </Modal>
             </div>
-            <div style={{ minWidth: "500px", height: "550px", marginTop: 85 }}>
+            <div style={{marginLeft: 5, minWidth: "50%", height: "550px", marginTop: 95, display: 'flex', alignItems: 'center' }}>
               {isLoaded ? (
                 <GoogleMap
                   mapContainerStyle={containerStyle}

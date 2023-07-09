@@ -14,8 +14,8 @@ const EditUser = () => {
   const [middleName, setMiddleName] = useState("");
   const [lastName, setLastName] = useState("");
   const [phone, setPhone] = useState("");
-  const [imageUrl, setImageUrl] = useState("");
-  const [imageAlt, setImageAlt] = useState("");
+  // const [imageUrl, setImageUrl] = useState("");
+  // const [imageAlt, setImageAlt] = useState("");
   const [state, setState] = useState("");
   const [country, setCountry] = useState("");
   const [city, setCity] = useState("");
@@ -28,24 +28,22 @@ const EditUser = () => {
   useEffect(()=>{
     if (!id) return;
 
-    getUserById(id).then((json) => {
-       var cleanBusiness = JSON.stringify(json[0].business).replace(/['"]+/g, "");
-      const bzz = JSON.parse(cleanBusiness)
+    // getUserById().then((json) => {
 
-      setFirstName(json[0].firstName as string);
-      setMiddleName(json[0].middleName as string);
-      setLastName(json[0].lastName as string);
-      setPhone(json[0].phone as string);
-      setImageUrl(json[0].imageUrl as string);
-      setImageAlt(json[0].imageAlt as string);
-      setState(json[0].state as string);
-      setCountry(json[0].country as string);
-      setCity(json[0].city as string);
-      setStreet(json[0].street as string);
-      setHouseNumber(json[0].houseNumber as string);
-      setZip(json[0].zip as string);
-      setBusiness(bzz);
-    })
+    //   setFirstName(json.firstName as string);
+    //   setMiddleName(json.middleName as string);
+    //   setLastName(json.lastName as string);
+    //   setPhone(json.phone as string);
+    //   // setImageUrl(json.imageUrl as string);
+    //   // setImageAlt(json.imageAlt as string);
+    //   setState(json.state as string);
+    //   setCountry(json.country as string);
+    //   setCity(json.city as string);
+    //   setStreet(json.street as string);
+    //   setHouseNumber(json.houseNumber as string);
+    //   setZip(json.zip as string);
+    //   setBusiness(json.business || false);
+    // });
     
   }, [id])
 
@@ -57,8 +55,8 @@ const EditUser = () => {
       middleName,
       lastName,
       phone,
-      imageUrl,
-      imageAlt,
+      // imageUrl,
+      // imageAlt,
       state,
       country,
       city,
@@ -135,16 +133,9 @@ const EditUser = () => {
           />
         </div>
 
-        <div
-          style={{
-            width: "100%",
-            display: "flex",
-            justifyContent: "space-between",
-            marginBottom: 20,
-          }}
-        ></div>
+      
 
-        <div
+        {/* <div
           style={{
             width: "100%",
             display: "flex",
@@ -170,7 +161,7 @@ const EditUser = () => {
             onChange={(e) => setImageAlt(e.target.value)}
             // {...imageAltProp}
           />
-        </div>
+        </div> */}
 
         <div
           style={{

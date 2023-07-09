@@ -1,16 +1,34 @@
 var express = require('express');
 var router = express.Router();
 const users = require('../controllers/users');
+const multer = require('multer')
+const auth = require('../middleware/auth')
 
-router.get('/myuser/:id', users.myUser);
+// multer middleware
+const storage = multer.diskStorage({
+   destination: (req, file, cb) => {
+    cb(null, './uploads');
+  },
+  filename:  function (req, file, cb) {
+    console.log(file);
+    const submitDate = Date.now()
+    cb(null,  submitDate+ '-'+file.originalname);
+  },
+});
+
+const upload = multer({ storage: storage });
+
+//routes
+
+router.get('/myuser', auth, users.myUser);
 router.get('/', users.allUsers);
 
-
-router.post('/signup', users.signup);
+router.patch('/uploadAvatar', auth, upload.single('image'), users.uploadAvatar);
+router.post('/signup', upload.single('image'), users.signup);
 router.post('/login', users.login);
 router.post('/resetPassword', users.resetPassword);
-router.patch('/actualResetPassword/:id', users.actualResetPassword);
 
+router.patch('/actualResetPassword/:id', users.actualResetPassword);
 router.patch('/:id', users.edit);
 
 router.delete('/:id', users.delete);

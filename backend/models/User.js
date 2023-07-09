@@ -95,11 +95,13 @@ const userSchema = new mongoose.Schema(
       type: Date, 
       default: null 
     },
-    favorites: [{type: mongoose.Schema.Types.ObjectId, ref: 'Card'}],
-    // profileImage: { 
-    //   type: String, 
-    //   required: true 
-    // },
+    favorites: [{
+      type: mongoose.Schema.Types.ObjectId, 
+      ref: 'Card'
+    }],
+    image: { 
+      type: String
+    },
   },
   { timestamps: true }
 );

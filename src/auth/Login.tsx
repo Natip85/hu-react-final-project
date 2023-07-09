@@ -15,9 +15,10 @@ import {
   OutlinedInput,
   TextField,
   Typography,
+  Link
 } from "@mui/material";
 import { useTextInput } from "../hooks/useTextInput";
-import { Link, useNavigate } from "react-router-dom";
+import {  useNavigate } from "react-router-dom";
 import { login, passwordChange } from "../api/apiServices";
 import { toast } from "react-toastify";
 import { setToken, setUser } from "./TokenManager";
@@ -145,7 +146,7 @@ const handleClose = () => setOpen(false);
         >
           <TextField
             required
-            style={{ width: "100%", marginRight: 5 }}
+            style={{ width: "100%" }}
             id="outlined-basic"
             label="Email"
             variant="outlined"
@@ -187,13 +188,13 @@ const handleClose = () => setOpen(false);
           marginBottom: 15
         }}
       >
-        Dont have an account yet?{" "}
-        <Link className="loginLink" to="/signup">
-          Sign-up here
+        Dont have an account yet? {" "}
+        <Link className="loginLink" href="/signup">
+           Sign-up here
         </Link>
       </div>
       <div style={{ textAlign: "center" }}>
-        <Link onClick={handleOpen} className="loginLink" to="">
+        <Link onClick={handleOpen} className="loginLink" >
           Forgot password?
         </Link>
         

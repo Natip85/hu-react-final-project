@@ -95,12 +95,13 @@ const MyBusinessCard = ({
     <div style={{ margin: 10, height: "400px" }}>
       <Card
         sx={{
-          maxWidth: 375,
+          // maxWidth: 375,
           height: "100%",
           display: "flex",
           flexDirection: "column",
           justifyContent: "space-between",
           padding: 1,
+          boxShadow: '2px 2px 10px 2px gray'
         }}
       >
          <Link  style={{textDecoration: 'none'}} href={`/card-details/${cardId}`}>

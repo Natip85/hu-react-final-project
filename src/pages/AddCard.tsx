@@ -1,4 +1,4 @@
-import { Box, Button, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent, TextField } from "@mui/material";
+import { Box, Button, CircularProgress, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent, Stack, TextField } from "@mui/material";
 import React, { FormEvent, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Title from "../components/Title";
@@ -26,6 +26,7 @@ const AddCard = () => {
   const zipProp = useTextInput("");
   const [lat, setLat] = useState(0);
   const [lng, setLng] = useState(0);
+  const [loadCircle, setLoadCircle] = React.useState(false);
 
      const myUser = getUser()
      
@@ -78,7 +79,7 @@ const AddCard = () => {
     e.preventDefault();
 
     if (!validate()) return;
-
+ setLoadCircle(true);
     addCard({
       title: titleProp.value,
       subtitle: subtitleProp.value,
@@ -103,7 +104,10 @@ const AddCard = () => {
         toast.error(user.error);
       } else {
         toast.success("Card successfully added.");
-        navigate('/mycards')
+        setTimeout(() => {
+          navigate('/mycards')
+        }, 2000);
+       
       }
     });
   }
@@ -242,7 +246,7 @@ const AddCard = () => {
           />
           <Box sx={{ width: '50%' }}>
             <FormControl fullWidth>
-              <InputLabel id="demo-simple-select-label">Country</InputLabel>
+              <InputLabel id="demo-simple-select-label">Country *</InputLabel>
               <Select
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
@@ -320,7 +324,13 @@ const AddCard = () => {
           </div>
           <div style={{ width: "50%", marginLeft: 3 }}>
             <Button type="submit" style={{ width: "100%" }} variant="contained">
-              Submit
+              Submit  {loadCircle &&  <Stack
+                sx={{ color: "grey.500", marginLeft: "10px" }}
+                spacing={2}
+                direction="row"
+              >
+                <CircularProgress color="secondary" size={20} />
+              </Stack>}
             </Button>
           </div>
         </div>

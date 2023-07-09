@@ -1,5 +1,10 @@
-import { editUser, getUserById, passwordChange } from "../api/apiServices";
-import { useEffect, useState } from "react";
+import {
+  editUser,
+  getUserById,
+  passwordChange,
+  uploadAvatar,
+} from "../api/apiServices";
+import { ChangeEvent, useEffect, useState } from "react";
 import Title from "../components/Title";
 import {
   Box,
@@ -7,21 +12,33 @@ import {
   FormControl,
   InputLabel,
   MenuItem,
+  Modal,
   Select,
   Switch,
   TextField,
+  Typography,
 } from "@mui/material";
 import { countryCoordinates } from "../interfaces/IUserType";
 import { toast } from "react-toastify";
 import { getUser } from "../auth/TokenManager";
+
+const style = {
+  position: "absolute" as "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 500,
+  bgcolor: "background.paper",
+  border: "2px solid #000",
+  boxShadow: 24,
+  p: 4,
+};
 
 const Profile = () => {
   const [firstName, setFirstName] = useState("");
   const [middleName, setMiddleName] = useState("");
   const [lastName, setLastName] = useState("");
   const [phone, setPhone] = useState("");
-  const [imageUrl, setImageUrl] = useState("");
-  const [imageAlt, setImageAlt] = useState("");
   const [state, setState] = useState("");
   const [country, setCountry] = useState("");
   const [city, setCity] = useState("");
@@ -33,24 +50,45 @@ const Profile = () => {
   const label = { inputProps: { "aria-label": "Switch demo" } };
   const myUser = getUser();
 
-  useEffect(() => {
-    getUserById(myUser._id).then((json) => {
-      var cleanBusiness = JSON.stringify(json[0].business).replace(/['"]+/g,"");
-      const bzz = JSON.parse(cleanBusiness);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [previewImage, setPreviewImage] = useState<string | null>(null);
 
-      setFirstName(json[0].firstName as string);
-      setMiddleName(json[0].middleName as string);
-      setLastName(json[0].lastName as string);
-      setPhone(json[0].phone as string);
-      setImageUrl(json[0].imageUrl as string);
-      setImageAlt(json[0].imageAlt as string);
-      setState(json[0].state as string);
-      setCountry(json[0].country as string);
-      setCity(json[0].city as string);
-      setStreet(json[0].street as string);
-      setHouseNumber(json[0].houseNumber as string);
-      setZip(json[0].zip as string);
-      setBusiness(bzz);
+  const [open, setOpen] = useState(false);
+
+  const handleOpen = (arg: any) => {
+    setOpen(true);
+  };
+
+  const handleClose = () => setOpen(false);
+
+  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      setSelectedFile(e.target.files[0]);
+      previewFile(e.target.files[0]);
+    }
+  };
+
+  const previewFile = (file: File) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onloadend = () => {
+      setPreviewImage(reader.result as string);
+    };
+  };
+
+  useEffect(() => {
+    getUserById().then((json) => {
+      setFirstName(json.firstName as string);
+      setMiddleName(json.middleName as string);
+      setLastName(json.lastName as string);
+      setPhone(json.phone as string);
+      setState(json.state as string);
+      setCountry(json.country as string);
+      setCity(json.city as string);
+      setStreet(json.street as string);
+      setHouseNumber(json.houseNumber as string);
+      setZip(json.zip as string);
+      setBusiness(json.business || false);
     });
   }, [myUser._id]);
 
@@ -98,8 +136,6 @@ const Profile = () => {
       middleName,
       lastName,
       phone,
-      imageUrl,
-      imageAlt,
       state,
       country,
       city,
@@ -112,18 +148,18 @@ const Profile = () => {
     });
   }
 
-  function passValidate(){
-
-    const emailRe =/[a-z0-9\._%+!$&*=^|~#%'`?{}/\-]+@([a-z0-9\-]+\.){1,}([a-z]{2,16})/; //eslint-disable-line
+  function passValidate() {
+    const emailRe =
+      /[a-z0-9\._%+!$&*=^|~#%'`?{}/\-]+@([a-z0-9\-]+\.){1,}([a-z]{2,16})/; //eslint-disable-line
     if (!emailRe.test(passChange)) {
       toast.error("A valid email address is required.");
       return false;
     }
-    return true
+    return true;
   }
-  
+
   function handlePassChange() {
-    if(!passValidate()) return
+    if (!passValidate()) return;
     passwordChange({
       email: passChange,
     }).then((json) => {
@@ -131,6 +167,16 @@ const Profile = () => {
       if (json.error) {
         toast.error(json.error);
       }
+    });
+  }
+
+  function handleUpload() {
+    uploadAvatar( {
+      image: selectedFile,
+    }).then((json) => {
+      console.log(json);
+      handleClose();
+      toast.success("Avatar changed.");
     });
   }
 
@@ -147,21 +193,95 @@ const Profile = () => {
           <div
             style={{ width: "80%", textAlign: "center", margin: " 50px auto" }}
           >
-            <img
-              style={{
-                width: "300px",
-                height: "300px",
-                borderRadius: "50%",
-                position: "relative",
-                cursor: "pointer",
-              }}
-              src={"https://cdn-icons-png.flaticon.com/512/610/610120.png"}
-              alt=""
-            />
-
-            <h3>{myUser.firstName}</h3>
+            <div style={{ height: "30%" }}>
+             
+              <img
+                style={{
+                  width: "90%",
+                  height: "100%",
+                  borderRadius: "50%",
+                  position: "relative",
+                  cursor: "pointer",
+                }}
+                alt="profile-avatar"
+                src={
+                  myUser.image
+                    ? require(`../../backend/uploads/${myUser.image}`)
+                    : "https://cdn-icons-png.flaticon.com/512/610/610120.png"
+                }
+                
+              />
+            </div>
+            <Button variant="text" onClick={handleOpen} className="loginLink">
+              Change profile pic
+            </Button>
+            <h3>{firstName}</h3>
             <p style={{ color: "grey" }}>{myUser.email}</p>
           </div>
+
+          <Modal
+            open={open}
+            onClose={handleClose}
+            aria-labelledby="modal-modal-title"
+            aria-describedby="modal-modal-description"
+          >
+            <form>
+              <Box sx={style}>
+                <Typography
+                  sx={{ textAlign: "center" }}
+                  id="modal-modal-title"
+                  variant="h4"
+                  component="h2"
+                >
+                  Choose your avatar
+                </Typography>
+
+                <Box
+                  sx={{
+                    textAlign: "center",
+                    marginTop: 3,
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                  }}
+                >
+                  <Button
+                    sx={{ marginBottom: 5 }}
+                    variant="contained"
+                    component="label"
+                  >
+                    Upload Avatar
+                    <input
+                      hidden
+                      type="file"
+                      accept="image/*"
+                      onChange={handleFileChange}
+                    />
+                  </Button>
+
+                  {previewImage && (
+                    <img
+                      src={previewImage}
+                      alt="Preview"
+                      style={{
+                        width: "150px",
+                        height: "150px",
+                        borderRadius: "50%",
+                        textAlign: "center",
+                      }}
+                    />
+                  )}
+                  <Button
+                    sx={{ marginTop: 3 }}
+                    onClick={handleUpload}
+                    variant="text"
+                  >
+                    Submit
+                  </Button>
+                </Box>
+              </Box>
+            </form>
+          </Modal>
         </div>
 
         <div style={{ flex: 2 }}>
@@ -222,41 +342,6 @@ const Profile = () => {
                 variant="outlined"
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
-              />
-            </div>
-
-            <div
-              style={{
-                width: "100%",
-                display: "flex",
-                justifyContent: "space-between",
-                marginBottom: 20,
-              }}
-            ></div>
-
-            <div
-              style={{
-                width: "100%",
-                display: "flex",
-                justifyContent: "space-between",
-                marginBottom: 20,
-              }}
-            >
-              <TextField
-                style={{ width: "50%", marginRight: 5 }}
-                id="outlined-basic"
-                label="imageUrl"
-                variant="outlined"
-                value={imageUrl}
-                onChange={(e) => setImageUrl(e.target.value)}
-              />
-              <TextField
-                style={{ width: "50%" }}
-                id="outlined-basic"
-                label="imageAlt"
-                variant="outlined"
-                value={imageAlt}
-                onChange={(e) => setImageAlt(e.target.value)}
               />
             </div>
 

@@ -21,20 +21,39 @@ module.exports = {
   },
   myUser: async function (req, res, next) {
     try {
-      const scheme = joi.object({
-        _id: joi.string(),
-      });
+     const decoded = req.user;
+    const currentUser = await User.findById(decoded._id);
 
-      const { error, value } = scheme.validate({ _id: req.params.id });
-      if (error) {
-        console.log(error.details[0].message);
-        res.status(400).json({ error: "invalid data" });
-        return;
-      }
-
-      const result = await User.find({ _id: value._id });
-
-      res.json(result);
+      const {
+      firstName,
+      lastName,
+      email,
+      phone,
+      country,
+      city,
+      state,
+      street,
+      houseNumber,
+      zip,
+      imageUrl,
+      imageAlt,
+      business
+    } = currentUser;
+    res.status(200).json({
+      firstName,
+      lastName,
+      email,
+      phone,
+      country,
+      city,
+      state,
+      street,
+      houseNumber,
+      zip,
+      imageUrl,
+      imageAlt,
+      business
+    });
     } catch (err) {
       console.log(err);
       res.status(400).json({ error: "error getting user" });
@@ -88,6 +107,7 @@ module.exports = {
     }
   },
   signup: async function (req, res, next) {
+console.log(req.file);
     const schema = joi.object({
       admin: joi.boolean(),
       firstName: joi.string().required().min(2).max(100),
@@ -107,6 +127,7 @@ module.exports = {
       business: joi.boolean(),
       lat: joi.number(),
       lng: joi.number(),
+      image: joi.any()
     });
 
     const { error, value } = schema.validate(req.body);
@@ -123,6 +144,7 @@ module.exports = {
       }
 
       const hash = await bcrypt.hash(value.password, 10);
+
 
       const newUser = new User({
         firstName: value.firstName,
@@ -143,6 +165,7 @@ module.exports = {
         business: value.business,
         lat: value.lat,
         lng: value.lng,
+        image: req.file ? req.file.filename : undefined
       });
 
       await newUser.save();
@@ -150,7 +173,6 @@ module.exports = {
       await sendEmail({
         email: newUser.email,
         subject: "Thank you for registering.",
-        // message: "We can't wait to show you what we have in store!",
         html: ` <h1>We can't wait to show you what we have in store!</h1> <a href="http://localhost:3001"><button style="background-color:blue; border: none; color: white; height: 35px; cursor: pointer; ">Go to Bcard NOW!</button> </a>`,
       });
 
@@ -171,6 +193,7 @@ module.exports = {
         zip: newUser.zip,
         business: newUser.business,
         isBlocked: newUser.isBlocked,
+        // image: newUser.image
       });
     } catch (err) {
       console.log(err.message);
@@ -224,6 +247,7 @@ module.exports = {
         business: user.business,
         isBlocked: user.isBlocked,
         favorites: user.favorites,
+        image: user.image
       });
     } catch (err) {
       const user = await User.findOne({ email: req.body.email });
@@ -321,6 +345,36 @@ module.exports = {
     } catch (err) {
       console.log(err.message);
       res.status(400).json({ error: "error resetting password" + err.message });
+    }
+  },
+  uploadAvatar: async function (req, res, next) {
+
+  
+    try {
+
+      
+const user = await User.updateOne(
+        { _id: req.user._id },
+        { image: req.file.filename  }
+      );
+    
+
+   if (!user) return res.status(400).json({ error: "User doesn't exits." });
+
+      const updated = await User.findOne({ _id: req.user._id });
+
+      res.json({
+        // token: token,
+        _id: updated._id,
+        image: updated.image
+      });
+
+     
+    } catch (err) {
+      console.log(err.message);
+      res
+        .status(400)
+        .json({ error: "error signing up new user" + err.message });
     }
   },
 };

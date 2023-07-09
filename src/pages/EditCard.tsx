@@ -2,8 +2,9 @@ import React, { useEffect, useState } from "react";
 import Title from "../components/Title";
 import { useNavigate, useParams } from "react-router-dom";
 import { editCards, getCardById } from "../api/apiServices";
-import { Button, TextField } from "@mui/material";
+import { Box, Button, FormControl, InputLabel, MenuItem, Select, TextField } from "@mui/material";
 import { toast } from "react-toastify";
+import { countryCoordinates } from "../interfaces/IUserType";
 
 const EditCard = () => {
   const { id } = useParams();
@@ -247,7 +248,7 @@ const EditCard = () => {
             value={state}
             onChange={(e) => setState(e.target.value)}
           />
-          <TextField
+          {/* <TextField
             required
             style={{ width: "50%" }}
             id="outlined-basic"
@@ -255,7 +256,25 @@ const EditCard = () => {
             variant="outlined"
             value={country}
             onChange={(e) => setCountry(e.target.value)}
-          />
+          /> */}
+          <Box sx={{ width: '50%' }}>
+            <FormControl fullWidth>
+              <InputLabel id="demo-simple-select-label">Country *</InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={country}
+                label="Country"
+                onChange={(e) => setCountry(e.target.value)}
+              >
+                {countryCoordinates.map((country, index) => (
+                  <MenuItem  key={index} value={country.name}>
+                    {country.name}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </Box>
         </div>
 
         <div

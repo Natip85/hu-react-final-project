@@ -26,6 +26,7 @@ export interface User {
   isBlocked?: boolean
   favorites?: [string] | null;
   confirmPassword?: string
+  image?: any
 }
 
 export const countryCoordinates = [

@@ -9,12 +9,23 @@ const cardsUrl = `${serverUrl}cards/`;
 const eventsUrl = `${serverUrl}events/`;
 
 export async function signup(user: User): Promise<User> {
+let formdata = new FormData();
+
+for (const key in user  ){
+  if(key === 'image' && user.image){
+    formdata.append("image",user.image, user.image.name||'default-name');
+  }else{
+    formdata.append(key,(user as any)[key])
+  }
+} 
+
   const res = await fetch(`${usersUrl}signup`, {
     method: "POST",
     headers: {
-      "Content-Type": "application/json",
+      // "Content-Type": "application/json",
+        //  "Content-Type": "multipart/form-data",
     },
-    body: JSON.stringify(user),
+    body: formdata,
   });
   return res.json();
 }
@@ -35,10 +46,10 @@ export async function getUsers(): Promise<Array<User>> {
   return res.json();
 }
 
-export async function getUserById(_id: string): Promise<Array<User>> {
-  const res = await fetch(`${usersUrl}myuser/${_id}`, {
+export async function getUserById(): Promise<User> {
+  const res = await fetch(`${usersUrl}myuser`, {
     headers: {
-      // 'x-auth-token': getToken()
+      'x-auth-token': getToken()
     }
   });
   return res.json();
@@ -76,6 +87,7 @@ export async function passwordChange(user: User):Promise<User> {
   })
   return res.json();
 }
+
 export async function actualResetPassword(_id: string, user: User):Promise<User> {
   const res = await fetch(`${usersUrl}actualResetPassword/${_id}`, {
     method: "PATCH",
@@ -87,11 +99,24 @@ export async function actualResetPassword(_id: string, user: User):Promise<User>
   return res.json();
 }
 
+export async function uploadAvatar(user: User): Promise<User> {
+let formdata = new FormData();
 
 
+    formdata.append("image",user.image, user.image.name||'default-name');
+ 
+   
 
 
-
+  const res = await fetch(`${usersUrl}uploadAvatar`, {
+    method: "PATCH",
+     headers: {
+      'x-auth-token': getToken()
+    },
+    body: formdata,
+  });
+  return res.json();
+}
 
 export async function getCards(): Promise<Array<Card>> {
   const res = await fetch(`${cardsUrl}`);
@@ -170,7 +195,6 @@ export async function setFavorites(id: string): Promise<Card> {
   });
   return res.json();
 }
-
 
 export async function getEvents(): Promise<Array<EventTypes>> {
   const res = await fetch(`${eventsUrl}`);

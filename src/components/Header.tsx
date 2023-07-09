@@ -206,12 +206,14 @@ const Header = ({ isTopOfPage }: headerProps) => {
             </div>
             {/* ~MENU ITEMS*/}
             <div className="menuItems">
+             
               <NavLink to="/">HOME</NavLink>
               <NavLink to="/about">ABOUT</NavLink>
               {context?.business && <NavLink to="/mycards">MY CARDS</NavLink>}
               {verifyToken() && (
                 <>
                   <NavLink to="/favorites">FAV CARDS</NavLink>
+                 <NavLink to={`/profile/${context?.user}`}>MY PROFILE</NavLink>
 
                   {context?.admin && <NavLink to="/sandbox">SANDBOX</NavLink>}
                 </>
