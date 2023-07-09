@@ -82,7 +82,10 @@ const cardSchema = new mongoose.Schema(
     lng: {
       type: Number
     },
-      favorites: [{type: mongoose.Schema.Types.ObjectId, ref: 'User'}]
+      favorites: [{type: mongoose.Schema.Types.ObjectId, ref: 'User'}],
+      image: { 
+      type: String
+    },
   },
   { timestamps: true }
 );

@@ -348,7 +348,7 @@ const [previewImage, setPreviewImage] = useState<string | null>(null);
         >
 <Button
 sx={{marginBottom: 2}}
-  variant="contained"
+  variant="text"
   component="label"
 >
   Upload an Avatar

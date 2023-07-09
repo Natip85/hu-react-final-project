@@ -132,14 +132,37 @@ export async function getCards(): Promise<Array<Card>> {
   return res.json();
 }
 
+// export async function addCard(card: Card): Promise<Card> {
+//   const res = await fetch(`${cardsUrl}`, {
+//     method: "POST",
+//     headers: {
+//       "Content-Type": "application/json",
+//       'x-auth-token': getToken()
+//     },
+//     body: JSON.stringify(card),
+//   });
+//   return res.json();
+// }
+
 export async function addCard(card: Card): Promise<Card> {
+let formdata = new FormData();
+
+for (const key in card  ){
+  if(key === 'image' && card.image){
+    formdata.append("image",card.image, card.image.name||'default-name');
+  }else{
+    formdata.append(key,(card as any)[key])
+  }
+} 
+
   const res = await fetch(`${cardsUrl}`, {
     method: "POST",
     headers: {
-      "Content-Type": "application/json",
-      // 'x-auth-token': getToken()
+      // "Content-Type": "application/json",
+        //  "Content-Type": "multipart/form-data",
+        'x-auth-token': getToken()
     },
-    body: JSON.stringify(card),
+    body: formdata,
   });
   return res.json();
 }

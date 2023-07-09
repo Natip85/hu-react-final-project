@@ -1,12 +1,11 @@
 import { Box, Button, CircularProgress, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent, Stack, TextField } from "@mui/material";
-import React, { FormEvent, useState } from "react";
+import React, { ChangeEvent, FormEvent, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Title from "../components/Title";
 import { addCard } from "../api/apiServices";
 import { useTextInput } from "../hooks/useTextInput";
 import { toast } from "react-toastify";
 import { countryCoordinates } from "../interfaces/IUserType";
-import { getUser } from "../auth/TokenManager";
 
 const AddCard = () => {
   const navigate = useNavigate();
@@ -16,7 +15,6 @@ const AddCard = () => {
   const phoneProp = useTextInput("");
   const emailProp = useTextInput("");
   const webProp = useTextInput("");
-  const imageUrlProp = useTextInput("");
   const imageAltProp = useTextInput("");
   const stateProp = useTextInput("");
    const [country, setCountry] = useState("");
@@ -27,9 +25,23 @@ const AddCard = () => {
   const [lat, setLat] = useState(0);
   const [lng, setLng] = useState(0);
   const [loadCircle, setLoadCircle] = React.useState(false);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [previewImage, setPreviewImage] = useState<string | null>(null);
 
-     const myUser = getUser()
-     
+ const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      setSelectedFile(e.target.files[0]);
+     previewFile(e.target.files[0])
+    }
+  };
+
+    const previewFile = (file: File) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onloadend = () => {
+      setPreviewImage(reader.result as string);
+    };
+  };
 
   function validate(): boolean {
     if (!titleProp.value || titleProp.value.length < 2) {
@@ -55,10 +67,10 @@ const AddCard = () => {
       toast.error("A valid email address is required.");
       return false;
     }
-    // if (!countryProp.value) {
-    //   toast.error("Please select a country.");
-    //   return false;
-    // }
+    if (!country) {
+      toast.error("Please select a country.");
+      return false;
+    }
     if (!cityProp.value) {
       toast.error("Please select a city.");
       return false;
@@ -80,6 +92,8 @@ const AddCard = () => {
 
     if (!validate()) return;
  setLoadCircle(true);
+ console.log(selectedFile);
+ 
     addCard({
       title: titleProp.value,
       subtitle: subtitleProp.value,
@@ -87,7 +101,6 @@ const AddCard = () => {
       phone: phoneProp.value,
       email: emailProp.value,
       web: webProp.value,
-      imageUrl: imageUrlProp.value,
       imageAlt: imageAltProp.value,
       state: stateProp.value,
       country: country,
@@ -95,9 +108,9 @@ const AddCard = () => {
       street: streetProp.value,
       houseNumber: houseNumberProp.value,
       zip: zipProp.value,
-      userId: myUser._id,
       lat: lat,
       lng: lng,
+      image: selectedFile
     }).then((user) => {
 
       if (user.error) {
@@ -127,7 +140,8 @@ const AddCard = () => {
     <>
       <Title mainText="CREATE A BUSINESS CARD" />
 
-      <form onSubmit={handleSubmit} className="formWrap" style={{padding: 50, marginBottom: 100}}>
+      <form encType="multipart/form-data" onSubmit={handleSubmit} className="formWrap" style={{padding: 50, marginBottom: 100}}>
+
         <div
           style={{
             width: "100%",
@@ -216,30 +230,6 @@ const AddCard = () => {
           <TextField
             style={{ width: "50%", marginRight: 5 }}
             id="outlined-basic"
-            label="imageUrl"
-            variant="outlined"
-            {...imageUrlProp}
-          />
-          <TextField
-            style={{ width: "50%" }}
-            id="outlined-basic"
-            label="imageAlt"
-            variant="outlined"
-            {...imageAltProp}
-          />
-        </div>
-
-        <div
-          style={{
-            width: "100%",
-            display: "flex",
-            justifyContent: "space-between",
-            marginBottom: 20,
-          }}
-        >
-          <TextField
-            style={{ width: "50%", marginRight: 5 }}
-            id="outlined-basic"
             label="State"
             variant="outlined"
             {...stateProp}
@@ -314,6 +304,41 @@ const AddCard = () => {
             {...zipProp}
           />
         </div>
+
+         <div
+          style={{
+            width: "100%",
+            display: "flex",
+            flexDirection: 'column',
+            alignItems: "center",
+            marginBottom: 20,
+          }}
+        >
+<Button
+sx={{marginBottom: 2}}
+  variant="text"
+  component="label"
+>
+  Upload business image
+  <input
+  hidden
+    type="file"
+    accept="image/*" 
+    onChange={handleFileChange}
+  />
+</Button>
+ {previewImage && (
+        <div style={{ width: '150px', height: '150px', borderRadius: '50%' }}>
+          <img src={previewImage} alt="Preview" style={{ width: '100%', height: '100%', borderRadius: '50%' }}/>
+        </div>
+      )}
+          <input
+          hidden
+            style={{ width: "50%" }}
+            {...imageAltProp}
+          />
+        </div>
+
         <div style={{ width: "100%", display: "flex" }}>
           <div style={{ width: "50%", marginRight: 3 }}>
             <Link to="/mycards">

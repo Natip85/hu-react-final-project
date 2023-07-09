@@ -34,6 +34,7 @@ export interface CardProps {
   timestamps?: string;
   cardId?: string;
   favorites?: [] | null;
+  image?: any
 }
 
 const MyBusinessCard = ({
@@ -55,6 +56,7 @@ const MyBusinessCard = ({
   timestamps,
   cardId,
   favorites,
+  image
 }: CardProps) => {
   const context = useContext(AppContext);
   const [isRedHeart, setIsRedHeart] = useState(false);
@@ -109,7 +111,11 @@ const MyBusinessCard = ({
           <CardMedia
             component="img"
             height="140"
-            image={imageUrl ? imageUrl : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"}
+            image={
+                  image
+                    ? require(`../../backend/uploads/${image}`)
+                    : "https://media.istockphoto.com/id/1165333600/vector/bold-letter-b-logo-design-element-negative-space-style-two-letters-bc-or-cb-initials.jpg?s=612x612&w=0&k=20&c=EPa5zAijUCRwD5sMMd3F1QRCblBGENuYuYLAad__Nxc="
+                }
             alt={imageAlt}
           />
           <CardContent>

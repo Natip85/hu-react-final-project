@@ -28,4 +28,5 @@ export interface Card {
   status?: boolean
    favorites?: [] | null;
    onToggleFavorite?: Function
+    image?: any
 }

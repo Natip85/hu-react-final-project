@@ -32,6 +32,7 @@ export interface CardProps {
   cardId?: string;
   status?: boolean
   favorites?: [] | null
+  image?: any
 }
 
 const BusinessCard = ({
@@ -51,7 +52,8 @@ const BusinessCard = ({
   zip,
   timestamps,
   cardId,
-  favorites
+  favorites,
+  image
 }: CardProps) => {
   const [isRedHeart, setIsRedHeart] = useState(false);
 
@@ -114,7 +116,11 @@ const BusinessCard = ({
             <CardMedia
               component="img"
               height="140"
-              image={imageUrl ? imageUrl : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"}
+              image={
+                  image
+                    ? require(`../../backend/uploads/${image}`)
+                    : "https://media.istockphoto.com/id/1165333600/vector/bold-letter-b-logo-design-element-negative-space-style-two-letters-bc-or-cb-initials.jpg?s=612x612&w=0&k=20&c=EPa5zAijUCRwD5sMMd3F1QRCblBGENuYuYLAad__Nxc="
+                }
               alt={imageAlt }
             />
            

@@ -14,42 +14,51 @@ module.exports = {
   },
   addCard: async function (req, res, next) {
     try {
-      const scheme = joi.object({
-        title: joi.string().required().min(2).max(30),
-        subtitle: joi.string().required().min(2).max(30),
-        description: joi.string().required().min(5).max(3000),
-        phone: joi.string().required().min(6).max(250),
-        email: joi.string().max(150).required().email(),
-        web: joi.string().optional().allow(""),
-        imageUrl: joi.string().optional().allow(""),
-        imageAlt: joi.string().optional().allow(""),
-        state: joi.string().optional().allow(""),
-        country: joi.string().required(),
-        city: joi.string().required(),
-        street: joi.string().required(),
-        houseNumber: joi.string().required(),
-        zip: joi.string().optional().allow(""),
-        cardNumber: joi.number(),
-        userId: joi.string().optional().allow(""),
-        lat: joi.number(),
-        lng: joi.number(),
-      });
+const newImage = req.file ? req.file.filename : undefined;
+    const userId = req.user._id;
+    const {
+      title,
+      subtitle,
+      description,
+      phone,
+      email,
+      web,
+      imageUrl,
+      country,
+      state,
+      city,
+      street,
+      imageAlt,
+      houseNumber,
+      zip,
+      lat,
+      lng
+    } = req.body;
+    const newCard = await Card.create({
+      title,
+      subtitle,
+      description,
+      phone,
+      email,
+      web,
+      imageUrl,
+      imageAlt,
+      state,
+      country,
+      city,
+      street,
+      houseNumber,
+      zip,
+      lat,
+      lng,
+      userId,
+      image: newImage
+    });
 
-      const { error, value } = scheme.validate(req.body);
-
-      if (error) {
-        console.log(error.details[0].message);
-        res.status(400).json({ error: error.details[0].message });
-        return;
-      }
-
-      const newCard = new Card(value);
-      const result = await newCard.save();
-
-      res.json({
-        ...value,
-        _id: result._id,
-      });
+    res.status(200).json({
+      status: 'success',
+      data: newCard
+    });
     } catch (err) {
       console.log(err);
       res.status(400).json({ error: "Error adding card." + err });

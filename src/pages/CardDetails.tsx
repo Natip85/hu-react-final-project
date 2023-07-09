@@ -49,7 +49,7 @@ const style = {
 const CardDetails = () => {
   const isAboveMediumScreens = useMediaQuery("(min-width: 1060px)");
   const { id } = useParams();
-  const [card, setCard] = useState<Card>();
+  const [card, setCard] = useState<Card>({});
   const [lat, setLat] = useState(0);
   const [lng, setLng] = useState(0);
   const navigate = useNavigate();
@@ -63,6 +63,7 @@ const CardDetails = () => {
     if (!id) return;
 
     getCardById(id).then((json) => {
+
       setCard(json);
 
       let newone = JSON.stringify(json.lat);
@@ -201,9 +202,9 @@ const CardDetails = () => {
           <img
             style={{ width: "50%" }}
             src={
-              card?.imageUrl
-                ? card?.imageUrl
-                : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
+              card?.image
+                    ? require(`../../backend/uploads/${card.image}`)
+                    : "https://media.istockphoto.com/id/1165333600/vector/bold-letter-b-logo-design-element-negative-space-style-two-letters-bc-or-cb-initials.jpg?s=612x612&w=0&k=20&c=EPa5zAijUCRwD5sMMd3F1QRCblBGENuYuYLAad__Nxc="
             }
             alt=""
           />
