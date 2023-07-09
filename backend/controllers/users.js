@@ -4,7 +4,6 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const config = require("../config/dev");
 const sendEmail = require("./../utils/mail");
-const fs = require("fs");
 
 const signToken = (_id) => {
   return jwt.sign({ _id }, config.jwt_token, { expiresIn: "72800s" });
@@ -18,6 +17,27 @@ module.exports = {
     } catch (err) {
       console.log(err);
       res.status(400).json({ error: "error getting users" });
+    }
+  },
+  oneUser: async function (req, res, next) {
+    try {
+      const scheme = joi.object({
+        _id: joi.string().required(),
+      });
+
+      const { error, value } = scheme.validate({ _id: req.params.id });
+
+      if (error) {
+        console.log(error.details[0].message);
+        res.status(400).json({ error: "invalid data" });
+        return;
+      }
+
+      const result = await User.findOne({ _id: value._id });
+      res.json(result);
+    } catch (err) {
+      console.log(err);
+      res.status(400).json({ error: "error getting the card" });
     }
   },
   myUser: async function (req, res, next) {
@@ -108,7 +128,6 @@ module.exports = {
     }
   },
   signup: async function (req, res, next) {
-    console.log(req.file);
     const schema = joi.object({
       admin: joi.boolean(),
       firstName: joi.string().required().min(2).max(100),
@@ -298,7 +317,6 @@ module.exports = {
       res.status(400).json({ error: error.details[0].message });
       return;
     }
-    console.log(value);
     try {
       const user = await User.findOne({ email: value.email });
 

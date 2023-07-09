@@ -12,8 +12,6 @@ import {
   Switch,
   TextField,
   Link,
-  Modal,
-  Typography
 } from "@mui/material";
 import "./signUp.css";
 import Title from "../components/Title";
@@ -24,21 +22,6 @@ import { toast } from "react-toastify";
 import { signup } from "../api/apiServices";
 import { countryCoordinates } from "../interfaces/IUserType";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-
-// const style = {
-//   position: "absolute" as "absolute",
-//   top: "50%",
-//   left: "50%",
-//   transform: "translate(-50%, -50%)",
-//   width: 500,
-//   bgcolor: "background.paper",
-//   border: "2px solid #000",
-//   boxShadow: 24,
-//   p: 4,
-//   display: 'flex',
-//   flexDirection: 'column',
-//   alignItems: 'center'
-// };
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -52,7 +35,6 @@ const Signup = () => {
   const phoneProp = useTextInput("");
   const emailProp = useTextInput("");
   const passwordProp = useTextInput("");
-  // const imageUrlProp = useTextInput("");
   const imageAltProp = useTextInput("user-avatar");
   const stateProp = useTextInput("");
   const cityProp = useTextInput("");
@@ -66,12 +48,6 @@ const Signup = () => {
 
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
 const [previewImage, setPreviewImage] = useState<string | null>(null);
- 
-const [open, setOpen] = useState(false);
- const handleOpen = (arg: any) => {
-    setOpen(true);
-  };
-const handleClose = () => setOpen(false);
 
  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
@@ -114,10 +90,6 @@ const handleClose = () => setOpen(false);
       );
       return false;
     }
-    // if (!selectedFile) {
-    //   toast.error("Please select an avatar.");
-    //   return false;
-    // }
     if (!country) {
       toast.error("Please select a country.");
       return false;
@@ -150,7 +122,6 @@ const handleClose = () => setOpen(false);
       phone: phoneProp.value,
       email: emailProp.value,
       password: passwordProp.value,
-      // imageUrl: imageUrlProp.value,
       imageAlt: imageAltProp.value,
       state: stateProp.value,
       country: country,
@@ -191,23 +162,10 @@ const handleClose = () => setOpen(false);
     event.preventDefault();
   };
 
-//   function handleUpload(e: any){
-//  e.preventDefault();
-// uploadAvatar({
-//   image: selectedFile
-// }).then((json)=>{
-// navigate("/login");
-// })
-
-//   }
-
   return (
     <div style={{ height: "100vh" }}>
       <Title mainText="REGISTER" />
       <form encType="multipart/form-data" onSubmit={handleSubmit}  className="formWrap">
-
-        
-
         <div
           style={{
             width: "100%",
@@ -388,12 +346,6 @@ const handleClose = () => setOpen(false);
             marginBottom: 20,
           }}
         >
-          {/* <TextField
-            style={{ width: "50%", marginRight: 5 }}
-            label="imageUrl"
-            variant="outlined"
-            {...imageUrlProp}
-          /> */}
 <Button
 sx={{marginBottom: 2}}
   variant="contained"
@@ -407,7 +359,6 @@ sx={{marginBottom: 2}}
     onChange={handleFileChange}
   />
 </Button>
-         {/* <input  type="file" accept="image/*" onChange={handleFileChange}/> */}
  {previewImage && (
         <div style={{ width: '150px', height: '150px', borderRadius: '50%' }}>
           <img src={previewImage} alt="Preview" style={{ width: '100%', height: '100%', borderRadius: '50%' }}/>
@@ -416,8 +367,6 @@ sx={{marginBottom: 2}}
           <input
           hidden
             style={{ width: "50%" }}
-            // label="imageAlt"
-            // variant="outlined"
             {...imageAltProp}
           />
         </div>
@@ -446,49 +395,7 @@ sx={{marginBottom: 2}}
         </Link>
      
       </div>
-      {/* <Modal
-                open={open}
-                onClose={handleClose}
-                aria-labelledby="modal-modal-title"
-                aria-describedby="modal-modal-description"
-              >
-                <form >
-                  <Box sx={style}>
-                    <Typography
-                    sx={{textAlign: 'center'}}
-                      id="modal-modal-title"
-                      variant="h4"
-                      component="h2"
-                    >
-                      Choose your avatar?
-                     
-                    </Typography>
-                    
-                    <Box sx={{textAlign: 'center', marginTop: 3}}>
-                    <Button
-sx={{marginBottom: 5}}
-  variant="contained"
-  component="label"
->
-  Upload Avatar
-  <input
-  hidden
-    type="file"
-    accept="image/*" 
-    onChange={handleFileChange}
-  />
-</Button>
-         <Button onClick={handleUpload} variant="contained">Submit</Button>
- {previewImage && (
-        <div style={{ width: '150px', height: '150px', borderRadius: '50%' }}>
-          <img src={previewImage} alt="Preview" style={{ width: '100%', height: '100%', borderRadius: '50%' }}/>
-        </div>
-      )}
-                    </Box>
-                  </Box>
-                  
-                </form>
-              </Modal> */}
+     
     </div>
   );
 };

@@ -174,7 +174,6 @@ const Profile = () => {
     uploadAvatar( {
       image: selectedFile,
     }).then((json) => {
-      console.log(json);
       handleClose();
       toast.success("Avatar changed.");
     });

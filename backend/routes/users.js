@@ -10,17 +10,16 @@ const storage = multer.diskStorage({
     cb(null, './uploads');
   },
   filename:  function (req, file, cb) {
-    console.log(file);
     const submitDate = Date.now()
     cb(null,  submitDate+ '-'+file.originalname);
   },
 });
-
 const upload = multer({ storage: storage });
 
-//routes
 
+//routes
 router.get('/myuser', auth, users.myUser);
+router.get('/:id',auth, users.oneUser);
 router.get('/', users.allUsers);
 
 router.patch('/uploadAvatar', auth, upload.single('image'), users.uploadAvatar);

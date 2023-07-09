@@ -3,7 +3,7 @@ import Title from '../components/Title'
 import { Box, Button, FormControl, InputLabel, MenuItem, Select, Switch, TextField } from '@mui/material'
 import { countryCoordinates } from "../interfaces/IUserType";
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import { editUser, getUserById } from '../api/apiServices';
+import { editUser, getOneUserById } from '../api/apiServices';
 import { toast } from 'react-toastify';
 
 
@@ -14,8 +14,6 @@ const EditUser = () => {
   const [middleName, setMiddleName] = useState("");
   const [lastName, setLastName] = useState("");
   const [phone, setPhone] = useState("");
-  // const [imageUrl, setImageUrl] = useState("");
-  // const [imageAlt, setImageAlt] = useState("");
   const [state, setState] = useState("");
   const [country, setCountry] = useState("");
   const [city, setCity] = useState("");
@@ -28,22 +26,19 @@ const EditUser = () => {
   useEffect(()=>{
     if (!id) return;
 
-    // getUserById().then((json) => {
-
-    //   setFirstName(json.firstName as string);
-    //   setMiddleName(json.middleName as string);
-    //   setLastName(json.lastName as string);
-    //   setPhone(json.phone as string);
-    //   // setImageUrl(json.imageUrl as string);
-    //   // setImageAlt(json.imageAlt as string);
-    //   setState(json.state as string);
-    //   setCountry(json.country as string);
-    //   setCity(json.city as string);
-    //   setStreet(json.street as string);
-    //   setHouseNumber(json.houseNumber as string);
-    //   setZip(json.zip as string);
-    //   setBusiness(json.business || false);
-    // });
+    getOneUserById(id).then((json) => {
+      setFirstName(json.firstName as string);
+      setMiddleName(json.middleName as string);
+      setLastName(json.lastName as string);
+      setPhone(json.phone as string);
+      setState(json.state as string);
+      setCountry(json.country as string);
+      setCity(json.city as string);
+      setStreet(json.street as string);
+      setHouseNumber(json.houseNumber as string);
+      setZip(json.zip as string);
+      setBusiness(json.business || false);
+    });
     
   }, [id])
 
@@ -55,8 +50,6 @@ const EditUser = () => {
       middleName,
       lastName,
       phone,
-      // imageUrl,
-      // imageAlt,
       state,
       country,
       city,
@@ -90,7 +83,6 @@ const EditUser = () => {
             variant="outlined"
             value={firstName}
             onChange={(e) => setFirstName(e.target.value)}
-            // {...firstNameProp}
           />
           <TextField
             style={{ width: "50%" }}
@@ -99,7 +91,6 @@ const EditUser = () => {
             variant="outlined"
             value={middleName}
             onChange={(e) => setMiddleName(e.target.value)}
-            // {...middleNameProp}
           />
         </div>
 
@@ -119,7 +110,6 @@ const EditUser = () => {
             variant="outlined"
             value={lastName}
             onChange={(e) => setLastName(e.target.value)}
-            // {...lastNameProp}
           />
           <TextField
             required
@@ -129,39 +119,8 @@ const EditUser = () => {
             variant="outlined"
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
-            // {...phoneProp}
           />
         </div>
-
-      
-
-        {/* <div
-          style={{
-            width: "100%",
-            display: "flex",
-            justifyContent: "space-between",
-            marginBottom: 20,
-          }}
-        >
-          <TextField
-            style={{ width: "50%", marginRight: 5 }}
-            id="outlined-basic"
-            label="imageUrl"
-            variant="outlined"
-            value={imageUrl}
-            onChange={(e) => setImageUrl(e.target.value)}
-            // {...imageUrlProp}
-          />
-          <TextField
-            style={{ width: "50%" }}
-            id="outlined-basic"
-            label="imageAlt"
-            variant="outlined"
-            value={imageAlt}
-            onChange={(e) => setImageAlt(e.target.value)}
-            // {...imageAltProp}
-          />
-        </div> */}
 
         <div
           style={{
@@ -198,7 +157,6 @@ const EditUser = () => {
             variant="outlined"
             value={state}
             onChange={(e) => setState(e.target.value)}
-            // {...stateProp}
           />
         </div>
 
@@ -218,7 +176,6 @@ const EditUser = () => {
             variant="outlined"
             value={city}
             onChange={(e) => setCity(e.target.value)}
-            // {...cityProp}
           />
           <TextField
             required
@@ -228,7 +185,6 @@ const EditUser = () => {
             variant="outlined"
             value={street}
             onChange={(e) => setStreet(e.target.value)}
-            // {...streetProp}
           />
         </div>
 
@@ -248,7 +204,6 @@ const EditUser = () => {
             variant="outlined"
             value={houseNumber}
             onChange={(e) => setHouseNumber(e.target.value)}
-            // {...houseNumberProp}
           />
           <TextField
             style={{ width: "50%" }}
@@ -257,7 +212,6 @@ const EditUser = () => {
             variant="outlined"
             value={zip}
             onChange={(e) => setZip(e.target.value)}
-            // {...zipProp}
           />
         </div>
         <div style={{ width: "100%" }}>

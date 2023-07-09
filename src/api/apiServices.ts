@@ -55,6 +55,15 @@ export async function getUserById(): Promise<User> {
   return res.json();
 }
 
+export async function getOneUserById(_id: string): Promise<User> {
+  const res = await fetch(`${usersUrl}${_id}`, {
+    headers: {
+      'x-auth-token': getToken()
+    }
+  });
+  return res.json();
+}
+
 export async function editUser(_id: string, user: User): Promise<User> {
   const res = await fetch(`${usersUrl}${_id}`, {
     method: "PATCH",

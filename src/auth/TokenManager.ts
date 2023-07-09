@@ -2,17 +2,18 @@ import { User } from "../interfaces/IUserType";
 
 export const thepamsecretyek = "AIzaSyDeRdfT5_5oVCkUqJL_lpV7-_sRbs0WmCA"
 const tokenKey = "token";
+const userKey = "userData";
 
 export function setUser(user: User | null) {
   if (user) {
     const jsonUser = JSON.stringify(user);
 
-    localStorage.setItem("userData", jsonUser);
+    localStorage.setItem(userKey, jsonUser);
   }
 }
 
 export function getUser() {
-  const jsonUser = localStorage.getItem("userData");
+  const jsonUser = localStorage.getItem(userKey);
   if (jsonUser) {
     const parsedUser = JSON.parse(jsonUser);
     return parsedUser;

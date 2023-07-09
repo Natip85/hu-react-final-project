@@ -4,6 +4,22 @@
 
 This is a dynamic application for advertising businesses that provides full CRUD functionality and a RESTful API. It is built using React TypeScript Template with Material-UI for the frontend, Node.js with Express for the backend, and MongoDB as the database.
 
+## Prerequisites
+
+Before running the application, make sure you have the following installed:
+
+- Node.js
+- MongoDB
+- Installation:
+  - 1 Clone the repository:
+  - 2 Install the dependencies:
+- run: npm Install at both backend and main project folder directories
+  - Server port at 3000
+  - React development port at 3001
+- Start the development server at Server directory: npm start.
+- Start the frontend on main project directory: npm start.
+<!-- - Open your browser and visit http://localhost:3000 to access the application. -->
+
 ## Features
 
 - Create, read, update, and delete (CRUD) operations for managing advertisements
@@ -30,19 +46,3 @@ This is a dynamic application for advertising businesses that provides full CRUD
 - Phone validator , validate only Israely phone number
 - Running the server initializes the project by providing a hardcoded buisnesses json to the database, reprovides only when no businesses exist.
 - Buisness user cannot provide by him self latitude and longtitude for the buisness.
-
-## Prerequisites
-
-Before running the application, make sure you have the following installed:
-
-- Node.js
-- MongoDB
-- Installation:
-  - 1 Clone the repository:
-  - 2 Install the dependencies:
-- run: npm Install at both backend and main project folder directories
-  - Server port at 3000
-  - React development port at 3001
-- Start the development server at Server directory: npm start.
-- Start the frontend on main project directory: npm start.
-<!-- - Open your browser and visit http://localhost:3000 to access the application. -->
