@@ -4,6 +4,7 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const config = require("../config/dev");
 const sendEmail = require("./../utils/mail");
+const fs = require("fs");
 
 const signToken = (_id) => {
   return jwt.sign({ _id }, config.jwt_token, { expiresIn: "72800s" });
@@ -21,39 +22,39 @@ module.exports = {
   },
   myUser: async function (req, res, next) {
     try {
-     const decoded = req.user;
-    const currentUser = await User.findById(decoded._id);
+      const decoded = req.user;
+      const currentUser = await User.findById(decoded._id);
 
       const {
-      firstName,
-      lastName,
-      email,
-      phone,
-      country,
-      city,
-      state,
-      street,
-      houseNumber,
-      zip,
-      imageUrl,
-      imageAlt,
-      business
-    } = currentUser;
-    res.status(200).json({
-      firstName,
-      lastName,
-      email,
-      phone,
-      country,
-      city,
-      state,
-      street,
-      houseNumber,
-      zip,
-      imageUrl,
-      imageAlt,
-      business
-    });
+        firstName,
+        lastName,
+        email,
+        phone,
+        country,
+        city,
+        state,
+        street,
+        houseNumber,
+        zip,
+        imageUrl,
+        imageAlt,
+        business,
+      } = currentUser;
+      res.status(200).json({
+        firstName,
+        lastName,
+        email,
+        phone,
+        country,
+        city,
+        state,
+        street,
+        houseNumber,
+        zip,
+        imageUrl,
+        imageAlt,
+        business,
+      });
     } catch (err) {
       console.log(err);
       res.status(400).json({ error: "error getting user" });
@@ -107,7 +108,7 @@ module.exports = {
     }
   },
   signup: async function (req, res, next) {
-console.log(req.file);
+    console.log(req.file);
     const schema = joi.object({
       admin: joi.boolean(),
       firstName: joi.string().required().min(2).max(100),
@@ -127,7 +128,7 @@ console.log(req.file);
       business: joi.boolean(),
       lat: joi.number(),
       lng: joi.number(),
-      image: joi.any()
+      image: joi.any(),
     });
 
     const { error, value } = schema.validate(req.body);
@@ -144,7 +145,6 @@ console.log(req.file);
       }
 
       const hash = await bcrypt.hash(value.password, 10);
-
 
       const newUser = new User({
         firstName: value.firstName,
@@ -165,7 +165,7 @@ console.log(req.file);
         business: value.business,
         lat: value.lat,
         lng: value.lng,
-        image: req.file ? req.file.filename : undefined
+        image: req.file ? req.file.filename : undefined,
       });
 
       await newUser.save();
@@ -247,7 +247,7 @@ console.log(req.file);
         business: user.business,
         isBlocked: user.isBlocked,
         favorites: user.favorites,
-        image: user.image
+        image: user.image,
       });
     } catch (err) {
       const user = await User.findOne({ email: req.body.email });
@@ -348,28 +348,19 @@ console.log(req.file);
     }
   },
   uploadAvatar: async function (req, res, next) {
-
-  
     try {
-
-      
-const user = await User.updateOne(
-        { _id: req.user._id },
-        { image: req.file.filename  }
-      );
-    
-
-   if (!user) return res.status(400).json({ error: "User doesn't exits." });
-
-      const updated = await User.findOne({ _id: req.user._id });
-
+      const userId = req.user._id;
+      const newImage = req.file ? req.file.filename : undefined;
+      const user = await User.findById(userId);
+      if (!user) {
+        return res.status(404).send("User not found");
+      }
+      user.image = newImage;
+      await user.save();
       res.json({
-        // token: token,
-        _id: updated._id,
-        image: updated.image
+        _id: user._id,
+        image: user.image,
       });
-
-     
     } catch (err) {
       console.log(err.message);
       res
