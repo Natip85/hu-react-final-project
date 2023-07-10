@@ -111,8 +111,6 @@ const EditCard = () => {
       houseNumber,
       zip,
     }).then((json) => {
-    
-
       toast.success("Card edited successfully.");
         navigate(-1);
     });

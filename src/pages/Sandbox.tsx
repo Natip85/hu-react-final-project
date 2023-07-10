@@ -276,7 +276,11 @@ const Sandbox = () => {
                         <TableCell align="right">
                         <img
                           style={{ width: 150 }}
-                          src={row.imageUrl}
+                           src={
+                  row.image
+                    ? require(`../../backend/uploads/${row.image}`)
+                    : "https://media.istockphoto.com/id/1165333600/vector/bold-letter-b-logo-design-element-negative-space-style-two-letters-bc-or-cb-initials.jpg?s=612x612&w=0&k=20&c=EPa5zAijUCRwD5sMMd3F1QRCblBGENuYuYLAad__Nxc="
+                }
                           alt={row.imageAlt}
                         />{" "}
                       </TableCell>

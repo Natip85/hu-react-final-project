@@ -16,8 +16,6 @@ import Paper from "@mui/material/Paper";
 import { Box, Button, Container, Grid, Link } from "@mui/material";
 import { SearchContext } from "../hooks/SearchContext";
 import SkeletonCard from "../components/SkeletonCard";
-// import CardsCarousel from "../components/CardsCarousel";
-
 
 const Home = () => {
   const [cards, setCards] = useState<Array<Card>>([]);
@@ -60,21 +58,6 @@ const Home = () => {
         mainText="Find a business today!"
         subText="Check out our top businesses."
       />
-
-
-        {/* <div style={{width: '70%', margin: 'auto'}}>
-         
-
- <CardsCarousel
-          title='frfrdf'
-          description='fffrf'
-         
-          subtitle='frfrdfrd'
-        />
-        
-       
-      </div> */}
-
       <div
         style={{
           overflowY: "auto",
@@ -97,9 +80,6 @@ const Home = () => {
             <ViewModuleIcon />
           </Button>
         </div>
-
-       
-
         {displayMode === "list" && (
           <>
             <TableContainer component={Paper}>
@@ -134,7 +114,11 @@ const Home = () => {
                       <TableCell align="right">
                         <img
                           style={{ width: 150 }}
-                          src={row.imageUrl}
+                          src={
+                            row.image
+                              ? require(`../../backend/uploads/${row.image}`)
+                              : "https://media.istockphoto.com/id/1165333600/vector/bold-letter-b-logo-design-element-negative-space-style-two-letters-bc-or-cb-initials.jpg?s=612x612&w=0&k=20&c=EPa5zAijUCRwD5sMMd3F1QRCblBGENuYuYLAad__Nxc="
+                          }
                           alt={row.imageAlt}
                         />{" "}
                       </TableCell>
@@ -179,19 +163,13 @@ const Home = () => {
                           cardId={card._id}
                         />
                       )}
-                          
                     </Grid>
-                  
-                
                   ))}
                 </Grid>
               </Box>
             </Container>
-
           </>
         )}
-
-       
       </div>
     </>
   );

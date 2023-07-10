@@ -121,6 +121,7 @@ const Header = ({ isTopOfPage }: headerProps) => {
                     inputProps={{ "aria-label": "search" }}
                   />
                 </Search>
+                
                 {verifyToken() && (
                   <>
                     {context?.userName && <div>Hi, {getFirstInitial(context.userName)}</div>}
