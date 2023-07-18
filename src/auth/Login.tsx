@@ -77,9 +77,7 @@ const handleClose = () => setOpen(false);
       password: passwordProp.value,
     }).then((user) => {
       setUser(user);
-      if (user.err) {
-        toast.error(user.err);
-      }
+      
       if (user.error) {
         toast.error(user.error);
       } else {

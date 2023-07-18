@@ -20,7 +20,7 @@ import {
 } from "@mui/material";
 import { countryCoordinates } from "../interfaces/IUserType";
 import { toast } from "react-toastify";
-import { getUser } from "../auth/TokenManager";
+import { getUser, setUser } from "../auth/TokenManager";
 
 const style = {
   position: "absolute" as "absolute",
@@ -144,6 +144,7 @@ const Profile = () => {
       zip,
       business,
     }).then((json) => {
+      setUser(json)
       toast.success("User edited successfully.");
     });
   }

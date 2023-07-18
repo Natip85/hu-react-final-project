@@ -239,7 +239,7 @@ module.exports = {
       const user = await User.findOne({ email: value.email });
       if (!user) throw Error;
 
-      if (user.loginAttempts >= 2) {
+      if (user.loginAttempts >= 3) {
         user.isBlocked = true;
         user.blockReleaseTime = new Date(Date.now() + 24 * 60 * 60 * 1000);
         await user.save();

@@ -59,6 +59,7 @@ const EditUser = () => {
       business,
     }).then((json) => {
       toast.success("User edited successfully.");
+      
       navigate('/sandbox')
     });
   }
