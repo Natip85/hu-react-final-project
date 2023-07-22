@@ -1,5 +1,4 @@
-{
-"businesses":  [
+ [
   {
     "title": "ABC Electronics",
     "subtitle": "Electronics Retailer",
@@ -106,4 +105,3 @@
     "favorite": false
   }
 ]
-}
