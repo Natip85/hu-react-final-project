@@ -25,7 +25,7 @@ const HeaderLinks = () => {
         px: 2,
         // justifyContent: "space-between",
         alignItems: "center",
-        minWidth: "650px",
+        minWidth: "500px",
         // backgroundColor: 'red'
       }}
     >

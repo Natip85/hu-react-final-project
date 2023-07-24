@@ -36,7 +36,7 @@
 .linksDiv{
   display: flex;
   justify-content: space-between;
-  width: 80%;
+  width: 60%;
   /* max-width: 60%; */
 }
 
