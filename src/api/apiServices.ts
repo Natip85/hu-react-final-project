@@ -3,7 +3,7 @@ import { Card } from "../interfaces/ICardType";
 import { User } from "../interfaces/IUserType";
 import { EventTypes } from "../pages/CardDetails";
 
-const serverUrl = "http://localhost:5000/";
+const serverUrl = "http://localhost:3000/";
 const usersUrl = `${serverUrl}users/`;
 const cardsUrl = `${serverUrl}cards/`;
 const eventsUrl = `${serverUrl}events/`;
